@@ -1,21 +1,20 @@
 import { Component, inject, signal } from '@angular/core';
-// 1. CORRECCIÓN: Importa 'ReactiveFormsModule' (el módulo), no 'provideReactiveFormsModule'
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+// 1. CORRECCIÓN: Importa el MÓDULO, no la FUNCIÓN
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'; 
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
-// 2. CORRECCIÓN: Quitamos el 'import { routes }' que no va aquí
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule, // 2. CORRECCIÓN: Importa el MÓDULO aquí
     RouterLink
   ],
-  templateUrl: './login.html', // <-- CORREGIDO
-  styleUrl: './login.scss' // <-- CORREGIDO
+  templateUrl: './login.html', 
+  styleUrl: './login.scss'
 })
 export class LoginComponent {
   // Inyección de servicios moderna
