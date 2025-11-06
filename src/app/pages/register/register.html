@@ -1,1 +1,75 @@
-<p>register works!</p>
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light py-5">
+  <div class="card shadow-lg p-4" style="width: 100%; max-width: 500px;">
+    <div class="card-body">
+      <h2 class="card-title text-center mb-4 fw-bold">Crear Cuenta</h2>
+      
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="firstName" class="form-label">Nombre</label>
+            <input type="text" id="firstName" class="form-control" formControlName="firstName"
+                   [class.is-invalid]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched">
+            @if (registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) {
+              <div class="invalid-feedback">Requerido (mín. 2 letras).</div>
+            }
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lastName" class="form-label">Apellido</label>
+            <input type="text" id="lastName" class="form-control" formControlName="lastName"
+                   [class.is-invalid]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched">
+             @if (registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) {
+              <div class="invalid-feedback">Requerido (mín. 2 letras).</div>
+            }
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo Electrónico</label>
+          <input type="email" id="email" class="form-control" formControlName="email" placeholder="nombre@ejemplo.com"
+                 [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+          @if (registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched) {
+            <div class="invalid-feedback">El correo es obligatorio.</div>
+          }
+          @if (registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched) {
+            <div class="invalid-feedback">Ingresa un correo válido.</div>
+          }
+        </div>
+        
+        <div class="mb-4">
+          <label for="password" class="form-label">Contraseña</label>
+          <input type="password" id="password" class="form-control" formControlName="password" placeholder="******"
+                 [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+          @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+            <div class="invalid-feedback">Mínimo 6 caracteres.</div>
+          }
+        </div>
+        
+        @if (errorMessage()) {
+          <div class="alert alert-danger py-2 small text-center" role="alert">{{ errorMessage() }}</div>
+        }
+        @if (successMessage()) {
+          <div class="alert alert-success py-2 small text-center" role="alert">
+            <span [innerHTML]="successMessage()"></span>
+          </div>
+        }
+        
+        <div class="d-grid">
+          <button type="submit" class="btn btn-success py-2 fw-semibold" [disabled]="isLoading() || registerForm.invalid">
+            @if (isLoading()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Creando cuenta...
+            } @else {
+              Registrarse
+            }
+          </button>
+        </div>
+
+      </form>
+      
+      <div class="text-center mt-4">
+        <small class="text-muted">¿Ya tienes una cuenta? <a routerLink="/login" class="text-decoration-none">Inicia sesión aquí</a></small>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-// 1. CORRECCIÓN: Importa el MÓDULO, no la FUNCIÓN
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'; 
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -10,50 +9,52 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule, // 2. CORRECCIÓN: Importa el MÓDULO aquí
+    ReactiveFormsModule,
     RouterLink
   ],
-  templateUrl: './login.html', 
+  templateUrl: './login.html',
   styleUrl: './login.scss'
 })
 export class LoginComponent {
-  // Inyección de servicios moderna
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  // Signals para manejar el estado de la UI
   public errorMessage = signal<string | null>(null);
   public isLoading = signal(false);
 
-  // Definición del Formulario Reactivo
   public loginForm: FormGroup = this.fb.group({
     username: ['', [Validators.required, Validators.minLength(3)]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
-  // Método que se llama al enviar el formulario
   onSubmit() {
+    // 1. Validar formulario antes de hacer nada
     if (this.loginForm.invalid) {
-      this.errorMessage.set('Por favor, completa todos los campos correctamente.');
+      this.loginForm.markAllAsTouched(); // Para que se muestren los errores en la UI
       return;
     }
 
+    // 2. Iniciar estado de carga y limpiar errores previos
     this.isLoading.set(true);
     this.errorMessage.set(null);
 
+    // 3. Obtener valores del formulario
     const { username, password } = this.loginForm.value;
 
+    // 4. Llamar al servicio de autenticación
     this.authService.login(username, password).subscribe({
-      next: (respuesta) => {
+      next: () => {
+        // Exito: finaliza carga y redirige a '/books'
         this.isLoading.set(false);
-        console.log('Login exitoso:', respuesta);
-        this.router.navigate(['/']); 
+        this.router.navigate(['/books']);
       },
       error: (err) => {
+        // Error: finaliza carga y muestra mensaje
         this.isLoading.set(false);
         console.error('Error en login:', err);
-        this.errorMessage.set(err.message || 'Error desconocido al iniciar sesión');
+        // Ajusta esto según la estructura real de tu error de backend si es necesario
+        this.errorMessage.set(err.error?.message || err.message || 'Error al iniciar sesión. Verifica tus credenciales.');
       }
     });
   }

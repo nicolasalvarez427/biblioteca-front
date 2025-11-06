@@ -80,9 +80,16 @@ export class AuthService {
   /**
    * Registra un nuevo usuario llamando a la API del backend.
    */
-  register(username: string, password: string, role: 'Administrador' | 'Estudiante'): Observable<any> {
+  register(usuario: {
+    username: string;
+    password: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    role: 'Administrador' | 'Estudiante';
+  }): Observable<any> {
     const url = '/api/auth/register';
-    return this.http.post(url, { username, password, role });
+    return this.http.post(url, usuario);
   }
 
   /**

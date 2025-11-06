@@ -1,0 +1,37 @@
+<div class="container mt-4">
+  <h2>Libros Disponibles</h2>
+
+  @if (isLoading()) {
+    <div class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  } @else {
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      @for (book of books(); track book.id) {
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">{{ book.title }}</h5>
+              <p class="card-text text-muted">{{ book.author }}</p>
+              <span class="badge" [class.text-bg-success]="book.available" [class.text-bg-danger]="!book.available">
+                {{ book.available ? 'Disponible' : 'Prestado' }}
+              </span>
+            </div>
+            <div class="card-footer bg-transparent border-top-0">
+              <button 
+                class="btn btn-primary w-100" 
+                [disabled]="!book.available"
+                (click)="onLoan(book)">
+                Prestar
+              </button>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <p>No hay libros para mostrar.</p>
+      }
+    </div>
+  }
+</div>
