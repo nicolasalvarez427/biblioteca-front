@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrls: ['./app.scss'] // 👈 CORREGIDO
 })
 export class App {
-  protected readonly title = signal('biblioteca-front');
+  protected readonly title = signal('Biblioteca Front');
 }
