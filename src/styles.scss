@@ -1,39 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+@import "../node_modules/bootstrap/scss/bootstrap";
+
 html, body {
   height: 100%;
   margin: 0;
-  font-family: 'Inter', sans-serif; // O la fuente que prefieras
-  background-color: #f8fafc; // Un color de fondo suave para toda la app
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  background-color: #f8f9fa;
 }
 
-/* Hacemos que el componente raíz ocupe toda la altura y use flexbox vertical */
+/* Componente raíz como contenedor flex vertical */
 app-root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* El contenido principal se estira para ocupar el espacio */
-main {
-  flex: 1 0 auto;
-  display: flex;       /* Hacemos que main también sea flex */
-  flex-direction: column; /* Para que sus hijos puedan usar flex-grow si lo necesitan */
-}
-/* --- ESTRUCTURA GLOBAL (Sticky Footer) --- */
-html, body {
-  height: 100%;
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f0f2f5; /* Un gris muy suave para el fondo general */
-}
-
-app-root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* Esta clase hará que el contenido principal empuje al footer hacia abajo */
+/* Clase para que el contenido principal ocupe el espacio restante */
 .flex-grow-1 {
   flex-grow: 1 !important;
+}
+
+/* Mejoras visuales opcionales para las tarjetas */
+.card {
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
 }

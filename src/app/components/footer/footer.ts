@@ -4,11 +4,11 @@ import { Component } from '@angular/core';
   selector: 'app-footer',
   standalone: true,
   template: `
-    <footer class="bg-light text-center text-lg-start mt-auto py-3 border-top">
-      <div class="container text-center">
-        <span class="text-muted">
-          © 2025 Biblioteca App - Desarrollado con <span class="text-danger">❤</span> y <strong>Angular</strong>
-        </span>
+    <footer class="bg-white text-center py-3 mt-auto border-top">
+      <div class="container">
+        <small class="text-muted">
+          © 2025 Biblioteca App — Desarrollado con <span class="text-danger">❤</span> y Angular
+        </small>
       </div>
     </footer>
   `

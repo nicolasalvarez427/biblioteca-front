@@ -19,11 +19,11 @@ import { AuthService } from '../../services/auth.service';
             <div class="text-light me-3 d-none d-sm-block">
               Hola, <span class="fw-bold">{{ authService.currentUser()?.username }}</span>
             </div>
-            <button class="btn btn-danger btn-sm fw-semibold px-3" (click)="logout()">
+            <button class="btn btn-danger btn-sm fw-semibold" (click)="logout()">
               Cerrar Sesión
             </button>
           } @else {
-            <a routerLink="/login" class="btn btn-outline-light btn-sm px-3">Ingresar</a>
+            <a routerLink="/login" class="btn btn-outline-light btn-sm">Ingresar</a>
           }
         </div>
       </div>
