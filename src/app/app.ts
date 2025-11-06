@@ -1,14 +1,17 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from './components/header/header'; // <-- Importar
-import { FooterComponent } from './components/footer/footer'; // <-- Importar
+// Importamos tus nuevos componentes
+import { HeaderComponent } from './components/header/header';
+import { FooterComponent } from './components/footer/footer';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent], // <-- Agregar a imports
+  // Los agregamos aquí para poder usarlos en el HTML
+  imports: [RouterOutlet, HeaderComponent, FooterComponent],
   templateUrl: './app.html',
-  styleUrls: ['./app.scss']
+  styleUrl: './app.scss'
 })
-  protected readonly title = signal('Biblioteca Front');
+export class App {
+  title = 'biblioteca-front';
 }

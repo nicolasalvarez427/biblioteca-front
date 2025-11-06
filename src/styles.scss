@@ -19,3 +19,21 @@ main {
   display: flex;       /* Hacemos que main también sea flex */
   flex-direction: column; /* Para que sus hijos puedan usar flex-grow si lo necesitan */
 }
+/* --- ESTRUCTURA GLOBAL (Sticky Footer) --- */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f0f2f5; /* Un gris muy suave para el fondo general */
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Esta clase hará que el contenido principal empuje al footer hacia abajo */
+.flex-grow-1 {
+  flex-grow: 1 !important;
+}

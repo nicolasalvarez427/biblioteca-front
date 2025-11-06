@@ -8,31 +8,29 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-      <div class="container">
-        <a class="navbar-brand fw-bold" routerLink="/">
-          📚 Biblioteca App
+    <nav class="navbar navbar-expand navbar-dark bg-primary shadow-sm px-3">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold d-flex align-items-center" routerLink="/books">
+          <span class="fs-4 me-2">📚</span> Biblioteca App
         </a>
 
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center ms-auto">
           @if (authService.isAuthenticated()) {
-            <span class="text-light me-3 d-none d-md-block">
-              Hola, {{ authService.currentUser()?.username }}
-            </span>
-            <button class="btn btn-outline-light btn-sm" (click)="logout()">
+            <div class="text-light me-3 d-none d-sm-block">
+              Hola, <span class="fw-bold">{{ authService.currentUser()?.username }}</span>
+            </div>
+            <button class="btn btn-danger btn-sm fw-semibold px-3" (click)="logout()">
               Cerrar Sesión
             </button>
           } @else {
-            <a routerLink="/login" class="btn btn-sm btn-light me-2">Ingresar</a>
+            <a routerLink="/login" class="btn btn-outline-light btn-sm px-3">Ingresar</a>
           }
         </div>
       </div>
     </nav>
   `,
   styles: [`
-    .navbar {
-      z-index: 1030; /* Asegura que quede por encima de otros elementos si es necesario */
-    }
+    .navbar { z-index: 1030; }
   `]
 })
 export class HeaderComponent {

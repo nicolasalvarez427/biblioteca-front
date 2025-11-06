@@ -4,5 +4,6 @@ export interface Book {
   autor: string;
   isbn?: string;
   disponible: boolean;
-  imagenUrl?: string; // <-- Nuevo campo para la URL de la imagen
+  imagenUrl?: string;
+  stock?: number; // <-- Nuevo campo opcional (por si algún libro antiguo no lo tiene aún)
 }
