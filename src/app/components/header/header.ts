@@ -23,14 +23,18 @@ import { AuthService } from '../../services/auth.service';
               Cerrar Sesión
             </button>
           } @else {
-            <a routerLink="/login" class="btn btn-outline-light btn-sm">Ingresar</a>
+            <a routerLink="/login" class="btn btn-outline-light btn-sm fw-semibold">Ingresar</a>
           }
         </div>
       </div>
     </nav>
   `,
   styles: [`
-    .navbar { z-index: 1030; }
+    /* Asegura que el header quede por encima de otros elementos al hacer scroll */
+    .navbar {
+      z-index: 1030;
+      position: relative;
+    }
   `]
 })
 export class HeaderComponent {

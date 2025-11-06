@@ -1,0 +1,76 @@
+<div class="container mt-5 mb-5">
+  <h2 class="text-center text-primary fw-bold mb-4">Mis Préstamos</h2>
+
+  @if (isLoading()) {
+    <div class="text-center">
+      <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div>
+    </div>
+  } @else {
+    @if (loans().length === 0) {
+      <div class="alert alert-info text-center">
+        No tienes préstamos registrados. ¡Ve al catálogo y pide tu primer libro!
+      </div>
+    } @else {
+      <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover align-middle mb-0 bg-white">
+          <thead class="table-primary">
+            <tr>
+              <th>Libro</th>
+              <th>Fecha Préstamo</th>
+              <th>Estado / Fecha Límite</th>
+              <th>Acción / Duración</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (loan of loans(); track loan._id) {
+              <tr [class.table-light]="loan.devuelto">
+                <td>
+                  <div class="d-flex align-items-center">
+                    @if (loan.libro.imagenUrl) {
+                      <img [src]="loan.libro.imagenUrl" alt="Portada" class="me-3 rounded" style="width: 40px; height: 60px; object-fit: cover;">
+                    }
+                    <div>
+                      <div class="fw-bold">{{ loan.libro.titulo }}</div>
+                      <small class="text-muted">{{ loan.libro.autor }}</small>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</td>
+                <td>
+                  @if (!loan.devuelto) {
+                    @let daysLeft = getDaysRemaining(loan.fechaDevolucion);
+                    @if (daysLeft < 0) {
+                      <span class="badge bg-danger">Vencido hace {{ daysLeft * -1 }} días</span>
+                    } @else if (daysLeft <= 2) {
+                      <span class="badge bg-warning text-dark">Vence pronto ({{ daysLeft }} días)</span>
+                    } @else {
+                      <span class="badge bg-success">Activo ({{ daysLeft }} días restantes)</span>
+                    }
+                    <br>
+                    <small class="text-muted">Límite: {{ loan.fechaDevolucion | date:'dd/MM/yyyy' }}</small>
+
+                  } @else {
+                    <span class="badge bg-secondary">Devuelto</span>
+                    <br>
+                    <small class="text-muted">{{ loan.fechaRetornoReal | date:'dd/MM/yyyy' }}</small>
+                  }
+                </td>
+                <td>
+                  @if (!loan.devuelto) {
+                    <button class="btn btn-sm btn-outline-primary" (click)="onReturn(loan)">
+                      Devolver Libro
+                    </button>
+                  } @else {
+                    <span class="text-muted small">
+                      Lo tuviste por {{ getLoanDuration(loan.fechaPrestamo, loan.fechaRetornoReal!) }} días
+                    </span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>

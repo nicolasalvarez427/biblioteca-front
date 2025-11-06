@@ -1,9 +1,10 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BookService } from '../../services/book.service';
+import { BookService, Loan } from '../../services/book.service';
 import { Book } from '../../models/book.model';
-import { AuthService } from '../../services/auth.service'; // <-- Importante
-import { Router } from '@angular/router'; // <-- Importante
+// Importaciones necesarias para que funcione todo
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-book-list',
@@ -14,9 +15,12 @@ import { Router } from '@angular/router'; // <-- Importante
 })
 export class BookListComponent implements OnInit {
   private bookService = inject(BookService);
-  private authService = inject(AuthService); // <-- Inyectamos AuthService
-  private router = inject(Router);           // <-- Inyectamos Router
+  // Inyectamos estos servicios para poder usarlos
+  public authService = inject(AuthService);
+  private router = inject(Router);
 
+  // --- SIGNALS QUE FALTABAN ---
+  // Estos son los que causan el error si no están definidos
   public books = signal<Book[]>([]);
   public isLoading = signal<boolean>(true);
 
@@ -24,10 +28,9 @@ export class BookListComponent implements OnInit {
     this.loadBooks();
   }
 
-loadBooks() {
+  loadBooks() {
     this.bookService.getBooks().subscribe({
       next: (data) => {
-        console.log('🔍 DATOS EXACTOS DE MONGO:', data); // <--- ¡ESTA LÍNEA ES CLAVE!
         this.books.set(data);
         this.isLoading.set(false);
       },
@@ -38,9 +41,27 @@ loadBooks() {
     });
   }
 
-  // Este es el método que faltaba y que el HTML estaba buscando
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+  // --- MÉTODO QUE FALTABA PARA EL BOTÓN "PRESTAR" ---
+  onLoan(book: Book) {
+    // 1. Verificar si el usuario está autenticado
+    if (!this.authService.isAuthenticated()) {
+      alert('Debes iniciar sesión para pedir un libro.');
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    // 2. Confirmar la acción
+    if (!confirm(`¿Confirmas el préstamo de "${book.titulo}"?`)) return;
+
+    // 3. Llamar al servicio
+    this.bookService.solicitarPrestamo(book._id).subscribe({
+      next: () => {
+        alert('✅ ¡Préstamo realizado con éxito!');
+        this.loadBooks(); // Recargar la lista para ver el stock actualizado
+      },
+      error: (err) => {
+        alert('❌ Error: ' + (err.error?.message || 'No se pudo realizar el préstamo.'));
+      }
+    });
   }
 }
