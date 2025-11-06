@@ -1,13 +1,17 @@
 .card {
   border: none;
   border-radius: 1rem;
+  /* Opcional: un pequeño efecto al cargar */
+  animation: fadeIn 0.6s ease-out;
 }
 
-.form-control, .form-select {
-  border-radius: 0.5rem;
-  padding: 0.75rem 1rem;
+.card-title {
+  color: #333;
+  font-weight: 700;
+  /* El texto ya está centrado por la clase 'text-center' de Bootstrap en el HTML */
 }
 
-.btn {
-  border-radius: 0.5rem;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }

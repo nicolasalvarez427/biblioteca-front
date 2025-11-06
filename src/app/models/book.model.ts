@@ -1,8 +1,8 @@
 export interface Book {
-  id: string;
-  title: string;
-  author: string;
+  _id: string;
+  titulo: string;
+  autor: string;
   isbn?: string;
-  available: boolean;
-  // Agrega más campos según tu backend
+  disponible: boolean;
+  imagenUrl?: string; // <-- Nuevo campo para la URL de la imagen
 }

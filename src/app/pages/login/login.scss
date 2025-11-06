@@ -1,83 +1,17 @@
-/* === Contenedor general === */
-body {
-  background: #f8fafc;
-  font-family: 'Inter', sans-serif;
-  min-height: 100vh;
-}
-
-/* === Tarjeta del login === */
 .card {
   border: none;
   border-radius: 1rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  background-color: #fff;
+  /* Opcional: un pequeño efecto al cargar */
+  animation: fadeIn 0.6s ease-out;
 }
 
-/* === Títulos === */
 .card-title {
-  font-weight: 600;
-  font-size: 1.6rem;
-  color: #1a1a1a;
-}
-
-/* === Campos de entrada === */
-.form-control {
-  border-radius: 0.5rem;
-  padding: 0.75rem;
-  font-size: 0.95rem;
-}
-
-.form-control:focus {
-  border-color: #4f8cff;
-  box-shadow: 0 0 0 0.15rem rgba(79, 140, 255, 0.25);
-}
-
-/* === Botón === */
-.btn-primary {
-  border-radius: 0.5rem;
-  background-color: #4f8cff;
-  border-color: #4f8cff;
-  font-weight: 600;
-  transition: 0.2s ease;
-}
-
-.btn-primary:hover {
-  background-color: #3b6fd6;
-  border-color: #3b6fd6;
-}
-
-/* === Texto inferior === */
-small {
-  color: #555;
-}
-
-small a {
-  color: #4f8cff;
-  text-decoration: none;
-}
-
-small a:hover {
-  text-decoration: underline;
-}
-
-/* === Responsivo === */
-@media (max-width: 768px) {
-  .card {
-    width: 90% !important;
-  }
-}
-.card {
-  animation: fadeIn 0.5s ease forwards;
-  opacity: 0;
+  color: #333;
+  font-weight: 700;
+  /* El texto ya está centrado por la clase 'text-center' de Bootstrap en el HTML */
 }
 
 @keyframes fadeIn {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
