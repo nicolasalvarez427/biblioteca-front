@@ -39,9 +39,8 @@ import { AuthService } from '../../services/auth.service';
               <!-- 🔹 Opciones visibles solo para administradores -->
               @if (authService.isAdmin()) {
                 <li class="nav-item mx-2">
-                  <a 
-                    routerLink="/crear-libro" 
-                    class="nav-link text-light"
+                  <a
+                    routerLink="/admin/libros/nuevo"  class="nav-link text-light"
                     routerLinkActive="fw-bold text-decoration-underline">
                     ➕ Agregar Libro
                   </a>

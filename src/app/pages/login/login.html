@@ -1,46 +1,49 @@
-<div class="d-flex justify-content-center align-items-center flex-grow-1 py-5">
-  <div class="card p-4" style="width: 100%; max-width: 400px;">
-    <div class="card-body">
-      <h2 class="card-title text-center mb-4 fw-bold text-primary">Iniciar Sesión</h2>
+<div class="card p-4">
+  <div class="card-body">
+    <div class="text-center mb-4">
+      <span class="fs-1">📚</span> <h2 class="card-title mt-2">Bienvenido</h2>
+      <p class="text-muted">Inicia sesión en tu biblioteca</p>
+    </div>
 
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="mb-3">
-          <label for="username" class="form-label">Usuario</label>
-          <input type="text" id="username" class="form-control" formControlName="username"
-                 [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
-          @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
-            <div class="invalid-feedback">Usuario requerido (mín. 3 caracteres).</div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label for="password" class="form-label">Contraseña</label>
-          <input type="password" id="password" class="form-control" formControlName="password"
-                 [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-            <div class="invalid-feedback">Contraseña requerida (mín. 6 caracteres).</div>
-          }
-        </div>
-
-        @if (errorMessage()) {
-          <div class="alert alert-danger py-2 small text-center" role="alert">{{ errorMessage() }}</div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="username" class="form-label fw-semibold">Usuario</label>
+        <input type="text" id="username" class="form-control" formControlName="username"
+               [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+        @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
+          <div class="invalid-feedback">Usuario requerido.</div>
         }
-
-        <div class="d-grid mt-4">
-          <button type="submit" class="btn btn-primary fw-semibold" [disabled]="isLoading() || loginForm.invalid">
-            @if (isLoading()) {
-              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-              Entrando...
-            } @else {
-              Entrar
-            }
-          </button>
-        </div>
-      </form>
-
-      <div class="text-center mt-4">
-        <small class="text-muted">¿No tienes cuenta? <a routerLink="/register" class="text-decoration-none fw-semibold">Regístrate aquí</a></small>
       </div>
+
+      <div class="mb-4"> <label for="password" class="form-label fw-semibold">Contraseña</label>
+        <input type="password" id="password" class="form-control" formControlName="password"
+               [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <div class="invalid-feedback">Contraseña requerida.</div>
+        }
+      </div>
+
+      @if (errorMessage()) {
+        <div class="alert alert-danger py-2 small text-center rounded-3 mb-4" role="alert">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary fw-bold" [disabled]="isLoading() || loginForm.invalid">
+          @if (isLoading()) {
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Ingresando...
+          } @else {
+            Iniciar Sesión
+          }
+        </button>
+      </div>
+    </form>
+
+    <div class="text-center mt-4 pt-3 border-top">
+      <span class="text-muted">¿Nuevo aquí?</span>
+      <a routerLink="/register" class="text-decoration-none fw-bold ms-2">Crea tu cuenta</a>
     </div>
   </div>
 </div>

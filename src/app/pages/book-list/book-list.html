@@ -1,80 +1,112 @@
-<div class="container mt-5 mb-5">
-  <div class="text-center mb-5">
-    <h2 class="display-5 fw-bold text-primary">Catálogo de Libros</h2>
-    <p class="lead text-muted">Explora nuestra colección disponible para préstamo.</p>
-  </div>
-
-  @if (isLoading()) {
-    <div class="d-flex justify-content-center my-5">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Cargando...</span>
-      </div>
+<div class="container">
+  <div class="card card-glass shadow-lg">
+    <div class="card-header bg-transparent border-0 text-center pt-4 pb-2">
+      <h2 class="display-6 fw-bold text-primary mb-0">📚 Catálogo de Libros</h2>
+      <p class="text-muted">Explora nuestra colección disponible para préstamo.</p>
     </div>
-  } @else {
 
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4 justify-content-center">
-      @for (book of books(); track book._id) {
-        <div class="col">
-          <div class="card h-100 shadow-sm border-0 book-card">
-
-            @if (book.imagenUrl) {
-              <img [src]="book.imagenUrl" class="card-img-top book-image" alt="Portada de {{ book.titulo }}">
-            } @else {
-              <img src="https://placehold.co/200x300?text=Sin+Imagen" class="card-img-top book-image" alt="Sin imagen disponible">
-            }
-
-            <div class="card-body d-flex flex-column text-center">
-              <h5 class="card-title fw-bold text-dark">{{ book.titulo }}</h5>
-              <h6 class="card-subtitle mb-3 text-muted">{{ book.autor }}</h6>
-
-              <div class="flex-grow-1 d-flex align-items-center justify-content-center">
-                @if (book.isbn) {
-                  <small class="text-secondary">ISBN: {{ book.isbn }}</small>
-                }
-              </div>
-
-              <div class="mt-3">
-                <span class="badge rounded-pill px-3 py-2"
-                      [class.text-bg-success]="book.disponible"
-                      [class.text-bg-danger]="!book.disponible">
-                  {{ book.disponible ? 'Disponible' : 'Prestado' }}
-                </span>
-              </div>
-
-              @if (book.stock !== undefined) {
-                <div class="mt-2">
-                  <small class="text-muted fw-bold">Stock: {{ book.stock }}</small>
-                </div>
-              }
-            </div>
-
-            <div class="card-footer bg-transparent border-top-0 pb-3">
-              <!-- Solo los administradores pueden editar o eliminar -->
-              @if (authService.isAdmin()) {
-                <div class="d-flex flex-column gap-2">
-                  <button class="btn btn-outline-primary w-100 fw-semibold" (click)="onEdit(book)">
-                    ✏️ Editar
-                  </button>
-                  <button class="btn btn-outline-danger w-100 fw-semibold" (click)="onDelete(book)">
-                    🗑️ Eliminar
-                  </button>
-                </div>
-              } @else {
-                <!-- Botón normal para préstamo -->
-                <button class="btn btn-primary w-100 fw-semibold"
-                        [disabled]="!book.disponible"
-                        (click)="onLoan(book)">
-                  {{ book.disponible ? 'Prestar' : 'No disponible' }}
-                </button>
-              }
-            </div>
+    <div class="card-body p-4">
+      @if (isLoading()) {
+        <div class="d-flex justify-content-center my-5">
+          <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Cargando...</span>
           </div>
         </div>
-      } @empty {
-        <div class="col-12 text-center py-5">
-          <p class="text-muted fs-5">No se encontraron libros en la biblioteca.</p>
-        </div>
+      } @else {
+        
+        @if (books().length > 0) {
+          <div id="bookCarousel" class="carousel carousel-dark slide" data-bs-ride="false">
+            
+            <div class="carousel-indicators">
+              @for (group of groupedBooks(); track $index) {
+                <button type="button" data-bs-target="#bookCarousel" [attr.data-bs-slide-to]="$index"
+                        [class.active]="$index === 0" [attr.aria-current]="$index === 0 ? 'true' : 'false'"
+                        [attr.aria-label]="'Slide ' + ($index + 1)"></button>
+              }
+            </div>
+
+            <div class="carousel-inner">
+              
+              @for (group of groupedBooks(); track $index) {
+                <div class="carousel-item" [class.active]="$index === 0">
+                  
+                  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center px-5">
+                    
+                    @for (book of group; track book._id) {
+                      <div class="col">
+                        <div class="card h-100 shadow-sm border-0 book-card card-glass">
+                          @if (book.imagenUrl) {
+                            <img [src]="book.imagenUrl" class="card-img-top book-image" alt="Portada de {{ book.titulo }}">
+                          } @else {
+                            <img src="https://placehold.co/200x300?text=Sin+Imagen" class="card-img-top book-image" alt="Sin imagen disponible">
+                          }
+
+                          <div class="card-body d-flex flex-column text-center p-3">
+                            <h5 class="card-title fw-bold text-dark fs-6 mb-1">{{ book.titulo }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted small">{{ book.autor }}</h6>
+
+                            <div class="flex-grow-1 d-flex align-items-center justify-content-center">
+                              @if (book.isbn) {
+                                <small class="text-secondary" style="font-size: 0.75rem;">ISBN: {{ book.isbn }}</small>
+                              }
+                            </div>
+
+                            <div class="mt-2">
+                              <span class="badge rounded-pill px-2 py-1"
+                                    [class.text-bg-success]="book.disponible"
+                                    [class.text-bg-danger]="!book.disponible"
+                                    style="font-size: 0.7rem;">
+                                {{ book.disponible ? 'Disponible' : 'Prestado' }}
+                              </span>
+                            </div>
+                            @if (book.stock !== undefined) {
+                              <div class="mt-1"><small class="text-muted fw-bold" style="font-size: 0.7rem;">Stock: {{ book.stock }}</small></div>
+                            }
+                          </div>
+
+                          <div class="card-footer bg-transparent border-top-0 pb-3 pt-0 px-3">
+                            <div class="d-flex flex-column gap-2">
+                              <button class="btn btn-primary btn-sm fw-semibold w-100"
+                                      [disabled]="!book.disponible"
+                                      (click)="onLoan(book)">
+                                {{ book.disponible ? 'Prestar' : 'No disponible' }}
+                              </button>
+                              @if (authService.isAdmin()) {
+                                <div class="d-flex gap-1">
+                                  <button class="btn btn-outline-primary btn-sm w-50" (click)="onEdit(book)">✏️ Editar</button>
+                                  <button class="btn btn-outline-danger btn-sm w-50" (click)="onDelete(book)">🗑️ Eliminar</button>
+                                </div>
+                              }
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    } 
+                  </div> 
+                </div> 
+              } 
+
+            </div> 
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Siguiente</span>
+            </button>
+
+          </div>
+        
+        } @else {
+          <div class="col-12 text-center py-5 text-muted">
+            <span class="fs-1 d-block mb-2">🔍</span>
+            <p class="fs-5 mb-0">No se encontraron libros en la biblioteca.</p>
+          </div>
+        }
+        
       }
     </div>
-  }
+  </div>
 </div>

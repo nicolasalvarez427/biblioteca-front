@@ -1,17 +1,51 @@
+// src/app/pages/register/register.scss
+
+:host {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem; // Un poco menos de padding lateral en móviles
+}
+
 .card {
-  border: none;
+  width: 100%;
+  max-width: 550px; // Más ancho que el login porque tiene más campos
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 1rem;
-  /* Opcional: un pequeño efecto al cargar */
-  animation: fadeIn 0.6s ease-out;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  animation: slideUpFade 0.5s ease-out;
 }
 
 .card-title {
   color: #333;
-  font-weight: 700;
-  /* El texto ya está centrado por la clase 'text-center' de Bootstrap en el HTML */
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+// Reutilizamos estilos similares para consistencia
+.form-control {
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  &:focus {
+    box-shadow: 0 0 0 4px rgba(25, 135, 84, 0.15); // Verde para registro
+  }
+}
+
+.btn-success {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
+  }
+}
+
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }

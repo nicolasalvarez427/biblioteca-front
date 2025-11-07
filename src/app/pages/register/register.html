@@ -1,75 +1,63 @@
-<div class="d-flex justify-content-center align-items-center flex-grow-1 py-5">
-  <div class="card shadow-lg p-4" style="width: 100%; max-width: 500px;">
-    <div class="card-body">
-      <h2 class="card-title text-center mb-4 fw-bold">Crear Cuenta</h2>
-      
-      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label for="firstName" class="form-label">Nombre</label>
-            <input type="text" id="firstName" class="form-control" formControlName="firstName"
-                   [class.is-invalid]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched">
-            @if (registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) {
-              <div class="invalid-feedback">Requerido (mín. 2 letras).</div>
-            }
-          </div>
-          <div class="col-md-6 mb-3">
-            <label for="lastName" class="form-label">Apellido</label>
-            <input type="text" id="lastName" class="form-control" formControlName="lastName"
-                   [class.is-invalid]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched">
-             @if (registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) {
-              <div class="invalid-feedback">Requerido (mín. 2 letras).</div>
-            }
-          </div>
-        </div>
+<div class="card p-4">
+  <div class="card-body">
+    <div class="text-center mb-4">
+      <span class="fs-1">📝</span>
+      <h2 class="card-title mt-2">Crear Cuenta</h2>
+      <p class="text-muted">Únete a nuestra comunidad de lectores</p>
+    </div>
 
-        <div class="mb-3">
-          <label for="email" class="form-label">Correo Electrónico</label>
-          <input type="email" id="email" class="form-control" formControlName="email" placeholder="nombre@ejemplo.com"
-                 [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
-          @if (registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched) {
-            <div class="invalid-feedback">El correo es obligatorio.</div>
-          }
-          @if (registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched) {
-            <div class="invalid-feedback">Ingresa un correo válido.</div>
-          }
-        </div>
-        
-        <div class="mb-4">
-          <label for="password" class="form-label">Contraseña</label>
-          <input type="password" id="password" class="form-control" formControlName="password" placeholder="******"
-                 [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
-          @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
-            <div class="invalid-feedback">Mínimo 6 caracteres.</div>
-          }
-        </div>
-        
-        @if (errorMessage()) {
-          <div class="alert alert-danger py-2 small text-center" role="alert">{{ errorMessage() }}</div>
-        }
-        @if (successMessage()) {
-          <div class="alert alert-success py-2 small text-center" role="alert">
-            <span [innerHTML]="successMessage()"></span>
-          </div>
-        }
-        
-        <div class="d-grid">
-          <button type="submit" class="btn btn-success py-2 fw-semibold" [disabled]="isLoading() || registerForm.invalid">
-            @if (isLoading()) {
-              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-              Creando cuenta...
-            } @else {
-              Registrarse
-            }
-          </button>
-        </div>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
-      </form>
-      
-      <div class="text-center mt-4">
-        <small class="text-muted">¿Ya tienes una cuenta? <a routerLink="/login" class="text-decoration-none">Inicia sesión aquí</a></small>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="firstName" class="form-label fw-semibold">Nombre</label>
+          <input type="text" id="firstName" class="form-control" formControlName="firstName"
+                 [class.is-invalid]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched">
+          </div>
+        <div class="col-md-6 mb-3">
+          <label for="lastName" class="form-label fw-semibold">Apellido</label>
+          <input type="text" id="lastName" class="form-control" formControlName="lastName"
+                 [class.is-invalid]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched">
+           </div>
       </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label fw-semibold">Correo Electrónico</label>
+        <input type="email" id="email" class="form-control" formControlName="email" placeholder="nombre@ejemplo.com"
+               [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+        </div>
+
+      <div class="mb-4">
+        <label for="password" class="form-label fw-semibold">Contraseña</label>
+        <input type="password" id="password" class="form-control" formControlName="password" placeholder="******"
+               [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+        </div>
+
+      @if (errorMessage()) {
+        <div class="alert alert-danger py-2 small text-center rounded-3 mb-4" role="alert">{{ errorMessage() }}</div>
+      }
+      @if (successMessage()) {
+        <div class="alert alert-success py-2 small text-center rounded-3 mb-4" role="alert">
+          <span [innerHTML]="successMessage()"></span>
+        </div>
+      }
+
+      <div class="d-grid">
+        <button type="submit" class="btn btn-success fw-bold" [disabled]="isLoading() || registerForm.invalid">
+          @if (isLoading()) {
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Registrando...
+          } @else {
+            ¡Registrarme!
+          }
+        </button>
+      </div>
+
+    </form>
+
+    <div class="text-center mt-4 pt-3 border-top">
+      <span class="text-muted">¿Ya tienes cuenta?</span>
+      <a routerLink="/login" class="text-decoration-none fw-bold ms-2">Inicia sesión aquí</a>
     </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { BookService } from '../../services/book.service';
@@ -19,6 +19,18 @@ export class BookListComponent implements OnInit {
 
   public books = signal<Book[]>([]);
   public isLoading = signal<boolean>(true);
+
+  public groupedBooks = computed(() => {
+    const booksList = this.books();
+    // 🟢 CAMBIO AQUÍ: De 4 a 3
+    const chunkSize = 3; // Mostrar 3 libros por diapositiva
+    const groups: Book[][] = [];
+    
+    for (let i = 0; i < booksList.length; i += chunkSize) {
+      groups.push(booksList.slice(i, i + chunkSize));
+    }
+    return groups;
+  });
 
   ngOnInit(): void {
     this.loadBooks();
@@ -65,7 +77,7 @@ export class BookListComponent implements OnInit {
   }
 
   onEdit(book: Book): void {
-    this.router.navigate(['/editar-libro', book._id]);
+    this.router.navigate(['/admin/libros/editar', book._id]);
   }
 
   onDelete(book: Book): void {

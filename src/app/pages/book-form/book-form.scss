@@ -1,12 +1,24 @@
-.card {
-  border: none;
-  border-radius: 1rem;
+:host {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem 0;
 }
 
 .form-label {
   font-weight: 600;
+  color: #495057;
 }
 
-button {
-  min-width: 130px;
+.form-control {
+  // Un poco de estilo extra para los inputs glass
+  background-color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(0, 0, 0, 0.1);
+  &:focus {
+      background-color: #fff;
+      box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15);
+  }
 }

@@ -1,28 +1,49 @@
-/* You can add global styles to this file, and also import other style files */
+/* src/styles.scss */
 @use "bootstrap/scss/bootstrap" as *;
-
 
 html, body {
   height: 100%;
   margin: 0;
   font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-  background-color: #f8f9fa;
+  background: url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=2041&auto=format&fit=crop') no-repeat center center fixed;
+  background-size: cover;
+  background-color: #e9ecef;
 }
 
-/* Componente raíz como contenedor flex vertical */
 app-root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.05); /* Sutil velo oscuro */
 }
 
-/* Clase para que el contenido principal ocupe el espacio restante */
 .flex-grow-1 {
   flex-grow: 1 !important;
 }
 
-/* Mejoras visuales opcionales para las tarjetas */
-.card {
-  border: none;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+/* --- ESTILOS GLOBAL GLASSMORFISM PARA CARDS --- */
+.card-glass {
+  background-color: rgba(255, 255, 255, 0.75) !important; /* Blanco semitransparente, importante para override */
+  backdrop-filter: blur(8px); /* Desenfoca el fondo detrás de la tarjeta */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Borde sutil */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: all 0.3s ease; /* Transición suave para cualquier cambio */
+
+  &:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Sombra un poco más pronunciada en hover */
+  }
+}
+
+// Asegurarnos de que los fondos de header y footer de las tarjetas también sean transparentes
+.card-glass .card-header,
+.card-glass .card-footer {
+  background-color: rgba(255, 255, 255, 0.4) !important; // Un poco más transparente que el cuerpo
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+// Adaptación para tarjetas de libro (si tienen un estilo muy específico)
+.book-card.card-glass {
+  .card-footer {
+    background-color: rgba(255, 255, 255, 0.6) !important; // Un poco menos transparente para botones
+  }
 }

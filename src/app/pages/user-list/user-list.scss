@@ -1,9 +1,55 @@
-table {
-  border-radius: 8px;
-  overflow: hidden;
+:host {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem 0;
 }
 
-.badge {
+// (Mantén aquí los estilos de .book-list, .badge-role, etc. que te pasé antes)
+// ...
+.book-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: flex-start;
+
+  li {
+    background-color: rgba(13, 110, 253, 0.08);
+    color: #0d6efd;
+    border: 1px solid rgba(13, 110, 253, 0.2);
+    padding: 0.3rem 0.7rem;
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.no-loans-badge {
+  background-color: rgba(0,0,0,0.05);
+  color: #6c757d;
+  font-weight: normal;
+  font-style: italic;
+}
+
+.badge-role {
   font-size: 0.8rem;
+  padding: 0.5em 0.9em;
   letter-spacing: 0.3px;
+}
+
+.btn-delete {
+  transition: transform 0.2s;
+  &:hover { transform: scale(1.05); }
 }
