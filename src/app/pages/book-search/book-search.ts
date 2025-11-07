@@ -6,32 +6,34 @@ import { AuthService } from '../../services/auth.service';
 import { Book } from '../../models/book.model';
 
 @Component({
-  selector: 'app-book-list',
+  selector: 'app-book-search',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './book-list.html',
-  styleUrls: ['./book-list.scss']
+  templateUrl: './book-search.html',
+  styleUrl: './book-search.scss'
 })
-export class BookListComponent implements OnInit {
+export class BookSearchComponent implements OnInit {
   private readonly bookService = inject(BookService);
   public readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
   public allBooks = signal<Book[]>([]);
-  public isLoading = signal<boolean>(true);
-  
-  // --- 🔴 CAMBIO: Eliminamos searchTerm y filteredBooks ---
+  public isLoading = signal(true);
+  public searchTerm = signal<string>('');
 
-  // --- 🟢 CAMBIO: bookPages ahora se calcula desde allBooks ---
-  public bookPages = computed(() => {
-    const books = this.allBooks(); // Usa la lista completa
-    const pageSize = 8; // 2 filas de 4 = 8 libros por página
-    const pages = [];
+  // Señal computada para los libros filtrados
+  public filteredBooks = computed(() => {
+    const term = this.searchTerm().toLowerCase();
+    const books = this.allBooks();
 
-    for (let i = 0; i < books.length; i += pageSize) {
-      pages.push(books.slice(i, i + pageSize));
+    if (!term) {
+      return []; // No mostrar nada si no hay búsqueda
     }
-    return pages;
+    
+    return books.filter(book => 
+      book.titulo.toLowerCase().includes(term) ||
+      book.autor.toLowerCase().includes(term)
+    );
   });
 
   ngOnInit(): void {
@@ -52,31 +54,29 @@ export class BookListComponent implements OnInit {
     });
   }
   
-  // --- 🔴 CAMBIO: Eliminamos onSearch() ---
+  onSearch(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.searchTerm.set(input.value);
+  }
 
-  // ... (El resto de métodos onLoan, onEdit, onDelete se quedan igual) ...
+  // Mantenemos la lógica de préstamo y admin
   onLoan(book: Book): void {
     if (!this.authService.isAuthenticated()) {
       alert('Debes iniciar sesión para pedir un libro.');
       this.router.navigate(['/login']);
       return;
     }
-
     if (!book.disponible) {
       alert('Este libro no está disponible actualmente.');
       return;
     }
-
     if (confirm(`¿Confirmas el préstamo de "${book.titulo}"?`)) {
       this.bookService.solicitarPrestamo(book._id).subscribe({
         next: () => {
           alert('✅ ¡Préstamo realizado con éxito!');
-          this.loadBooks(); // Recargamos para actualizar el stock
+          this.loadBooks();
         },
-        error: (err) => {
-          const msg = err?.error?.message || 'No se pudo realizar el préstamo.';
-          alert(`❌ Error: ${msg}`);
-        }
+        error: (err) => alert(`❌ Error: ${err?.error?.message || 'Error'}`)
       });
     }
   }
@@ -90,12 +90,9 @@ export class BookListComponent implements OnInit {
       this.bookService.deleteBook(book._id).subscribe({
         next: (res) => {
           alert(`🗑️ ${res.message || 'Libro eliminado con éxito.'}`);
-          this.loadBooks(); // Recargamos para quitar el libro
+          this.loadBooks();
         },
-        error: (err) => {
-          const msg = err?.error?.message || 'No se pudo eliminar el libro.';
-          alert(`❌ Error: ${msg}`);
-        }
+        error: (err) => alert(`❌ Error: ${err?.error?.message || 'Error'}`)
       });
     }
   }

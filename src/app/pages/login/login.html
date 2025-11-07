@@ -6,15 +6,22 @@
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      
       <div class="mb-3">
-        <label for="username" class="form-label fw-semibold">Usuario</label>
-        <input type="text" id="username" class="form-control" formControlName="username"
-               [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
-        @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
-          <div class="invalid-feedback">Usuario requerido.</div>
+        <label for="email" class="form-label fw-semibold">Correo Electrónico</label>
+        <input type="email" id="email" class="form-control" formControlName="email"
+               placeholder="nombre@ejemplo.com"
+               [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+          <div class="invalid-feedback">
+            @if (loginForm.get('email')?.hasError('required')) {
+              Correo requerido.
+            } @else if (loginForm.get('email')?.hasError('email')) {
+              Formato de correo inválido.
+            }
+          </div>
         }
       </div>
-
       <div class="mb-4"> <label for="password" class="form-label fw-semibold">Contraseña</label>
         <input type="password" id="password" class="form-control" formControlName="password"
                [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">

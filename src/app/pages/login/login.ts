@@ -23,8 +23,9 @@ export class LoginComponent {
   public errorMessage = signal<string | null>(null);
   public isLoading = signal(false);
 
+  // --- CAMBIO 5: Cambiamos 'username' por 'email' y añadimos validador de email ---
   public loginForm: FormGroup = this.fb.group({
-    username: ['', [Validators.required, Validators.minLength(3)]],
+    email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
@@ -39,11 +40,11 @@ export class LoginComponent {
     this.isLoading.set(true);
     this.errorMessage.set(null);
 
-    // 3. Obtener valores del formulario
-    const { username, password } = this.loginForm.value;
+    // --- CAMBIO 6: Obtenemos 'email' del formulario ---
+    const { email, password } = this.loginForm.value;
 
-    // 4. Llamar al servicio de autenticación
-    this.authService.login(username, password).subscribe({
+    // --- CAMBIO 7: Llamamos al servicio con 'email' ---
+    this.authService.login(email, password).subscribe({
       next: () => {
         // Exito: finaliza carga y redirige a '/books'
         this.isLoading.set(false);

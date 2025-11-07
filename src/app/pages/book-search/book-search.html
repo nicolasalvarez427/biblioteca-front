@@ -1,0 +1,93 @@
+<div class="container">
+  <div class="card card-glass shadow-lg">
+    <div class="card-header bg-transparent border-0 text-center pt-4 pb-2">
+      <h2 class="display-6 fw-bold text-primary mb-0">🔎 Buscador de Libros</h2>
+    </div>
+
+    <div class="card-body p-4">
+      <div class="mb-4">
+        <input 
+          type="text" 
+          class="form-control form-control-lg"
+          placeholder="Escribe un título o autor..."
+          [value]="searchTerm()"
+          (input)="onSearch($event)"
+          autofocus>
+      </div>
+
+      @if (isLoading()) {
+        <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+      } @else {
+        
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 justify-content-center">
+          
+          @if (!searchTerm()) {
+            <div class="col-12 text-center py-5 text-muted">
+              <span class="fs-1 d-block mb-2">👆</span>
+              <p class="fs-5 mb-0">Escribe en la barra para buscar...</p>
+            </div>
+          }
+          
+          @for (book of filteredBooks(); track book._id) {
+            <div class="col">
+              <div class="card h-100 shadow-sm border-0 book-card card-glass">
+                @if (book.imagenUrl) {
+                  <img [src]="book.imagenUrl" class="card-img-top book-image" alt="Portada de {{ book.titulo }}">
+                } @else {
+                  <img src="https://placehold.co/200x300?text=Sin+Imagen" class="card-img-top book-image" alt="Sin imagen disponible">
+                }
+
+                <div class="card-body d-flex flex-column text-center p-3">
+                  <h5 class="card-title fw-bold text-dark fs-6 mb-1">{{ book.titulo }}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted small">{{ book.autor }}</h6>
+
+                  <div class="flex-grow-1 d-flex align-items-center justify-content-center">
+                    @if (book.isbn) {
+                      <small class="text-secondary" style="font-size: 0.75rem;">ISBN: {{ book.isbn }}</small>
+                    }
+                  </div>
+
+                  <div class="mt-2">
+                    <span class="badge rounded-pill px-2 py-1"
+                          [class.text-bg-success]="book.disponible"
+                          [class.text-bg-danger]="!book.disponible"
+                          style="font-size: 0.7rem;">
+                      {{ book.disponible ? 'Disponible' : 'Prestado' }}
+                    </span>
+                  </div>
+                  @if (book.stock !== undefined) {
+                    <div class="mt-1"><small class="text-muted fw-bold" style="font-size: 0.7rem;">Stock: {{ book.stock }}</small></div>
+                  }
+                </div>
+
+                <div class="card-footer bg-transparent border-top-0 pb-3 pt-0 px-3">
+                  <div class="d-flex flex-column gap-2">
+                    <button class="btn btn-primary btn-sm fw-semibold w-100"
+                            [disabled]="!book.disponible"
+                            (click)="onLoan(book)">
+                      {{ book.disponible ? 'Pedir' : 'No disponible' }}
+                    </button>
+                    @if (authService.isAdmin()) {
+                      <div class="d-flex gap-1">
+                        <button class="btn btn-outline-primary btn-sm w-50" (click)="onEdit(book)">✏️ Editar</button>
+                        <button class="btn btn-outline-danger btn-sm w-50" (click)="onDelete(book)">🗑️ Eliminar</button>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+
+          @if (searchTerm() && filteredBooks().length === 0) {
+            <div class="col-12 text-center py-5 text-muted">
+              <span class="fs-1 d-block mb-2">🧐</span>
+              <p class="fs-5 mb-0">No se encontraron libros para "{{ searchTerm() }}".</p>
+            </div>
+          }
+
+        </div>
+      }
+    </div>
+  </div>
+</div>

@@ -9,11 +9,11 @@
 }
 
 .book-card {
-  transition: all 0.3s ease-in-out; // Usar 'all' para transiciones suaves
+  transition: all 0.3s ease-in-out; 
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
 
   &:hover {
-    transform: translateY(-5px) scale(1.03) !important; // Un hover sutil
+    transform: translateY(-5px) scale(1.03) !important; 
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
   }
 }
@@ -28,55 +28,64 @@
   border-top-right-radius: calc(0.5rem - 1px);
 }
 
+// --- 🔴 ELIMINAMOS LOS ESTILOS DEL CARRUSEL ANTERIOR (nth-child, etc.) ---
+// ... (Borra todos los estilos que empezaban con #bookCarousel o .carousel-item) ...
 
-// --- ESTILOS DEL CARRUSEL ---
 
-#bookCarousel {
-  .carousel-inner {
-    padding: 2rem 4rem; // Aumentamos padding vertical para que el libro escalado quepa
-  }
+// --- 🟢 AÑADIMOS ESTILOS PARA LA PAGINACIÓN NUMÉRICA 🟢 ---
+.carousel-inner {
+  // Damos espacio para que las tarjetas no choquen con las flechas
+  // y para que se vean bien las 2 filas
+  padding: 1rem 4rem;
+  min-height: 750px; // Evita que el carrusel salte de altura
+}
 
-  .carousel-control-prev,
-  .carousel-control-next {
+.carousel-indicators {
+  position: relative; // Lo sacamos de la posición absoluta
+  bottom: auto;
+  left: auto;
+  right: auto;
+  margin: 1.5rem 0 0 0; // Espacio entre el carrusel y los números
+  padding: 0;
+  justify-content: center;
+  gap: 0.5rem; // Espacio entre botones
+}
+
+.carousel-indicators button {
+  width: 2.2rem;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  border-radius: 50%; // Círculo
+  text-indent: 0;     // Mostramos el número
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid var(--bs-primary);
+  background-color: transparent;
+  color: var(--bs-primary);
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-indicators button.active {
+  opacity: 1;
+  background-color: var(--bs-primary);
+  color: #fff;
+}
+
+.carousel-indicators button:hover {
+  opacity: 1;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    // Ajustamos las flechas para que estén a los lados
     width: 5%;
     .carousel-control-prev-icon,
     .carousel-control-next-icon {
       filter: invert(1) drop-shadow(0 0 2px rgba(0,0,0,0.5));
       background-size: 60%;
     }
-  }
-
-  .carousel-indicators {
-    position: relative;
-    margin-top: 0; // Lo subimos un poco
-
-    button {
-      background-color: #0d6efd;
-      width: 10px;
-      height: 10px;
-      border-radius: 100%;
-      opacity: 0.5;
-      border: 0;
-      &.active {
-        opacity: 1;
-      }
-    }
-  }
-
-  // 🟢 --- MAGIA PARA EL LIBRO CENTRAL --- 🟢
-
-  // 1. Escala el libro del centro
-  .carousel-item .row > .col:nth-child(2) .book-card {
-    transform: scale(1.15); // Hacemos el del centro 15% más grande
-    z-index: 10;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2) !important;
-  }
-
-  // 2. Achica y opaca los libros de los lados
-  .carousel-item .row > .col:nth-child(1) .book-card,
-  .carousel-item .row > .col:nth-child(3) .book-card {
-    transform: scale(0.9); // Los hacemos un 10% más pequeños
-    opacity: 0.7;
-    z-index: 1;
-  }
 }

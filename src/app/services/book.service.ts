@@ -41,6 +41,14 @@ export class BookService {
     return this.http.put(`${this.prestamosUrl}/devolver/${prestamoId}`, {});
   }
 
+  // --- CAMBIO AQUÍ: Añadimos el nuevo método ---
+  // 🆕 Crear un préstamo manualmente (solo admin)
+  createLoanManual(data: { libroId: string, usuarioId: string, fechaDevolucion: string }): Observable<any> {
+    // Llama a la ruta POST /api/prestamos
+    return this.http.post(this.prestamosUrl, data);
+  }
+  // --- Fin del cambio ---
+
   // 🆕 Crear un nuevo libro (solo admin)
   createBook(data: Partial<Book>): Observable<Book> {
     return this.http.post<Book>(this.apiUrl, data);

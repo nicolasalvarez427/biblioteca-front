@@ -47,10 +47,12 @@ export class AuthService implements OnDestroy {
 
   // --- MÉTODOS DE AUTENTICACIÓN ---
 
-  login(username: string, password: string): Observable<AuthResponse> {
+  // --- CAMBIO 3: El método ahora recibe 'email' ---
+  login(email: string, password: string): Observable<AuthResponse> {
     const url = '/api/auth/login';
 
-    return this.http.post<AuthResponse>(url, { username, password }).pipe(
+    // --- CAMBIO 4: Enviamos 'email' en el cuerpo de la petición ---
+    return this.http.post<AuthResponse>(url, { email, password }).pipe(
       tap(respuesta => {
         localStorage.setItem('auth_token', respuesta.token);
         this.#currentUser.set(respuesta.usuario);

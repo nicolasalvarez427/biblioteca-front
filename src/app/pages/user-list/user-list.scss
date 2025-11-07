@@ -27,12 +27,29 @@
     border-radius: 0.5rem;
     font-size: 0.8rem;
     font-weight: 500;
+    
+    // --- CAMBIO 6: Usamos flexbox para alinear el botón ---
     display: inline-flex;
     align-items: center;
+    justify-content: space-between; // Alinea el título a la izquierda y el botón a la derecha
+    gap: 0.5rem; // Espacio entre el ícono, título y botón
+    
     max-width: 100%;
     white-space: nowrap;
+  }
+  
+  .book-title {
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .btn-devolver {
+    // --- CAMBIO 7: Estilos para el botón de devolver ---
+    padding: 0.1rem 0.4rem;
+    font-size: 0.7rem;
+    --bs-btn-border-width: 1px;
+    margin-left: auto; // Empuja el botón al final
+    flex-shrink: 0; // Evita que el botón se encoja
   }
 }
 

@@ -50,9 +50,17 @@
                     <td class="text-start ps-4">
                       @if (user.librosPrestados && user.librosPrestados.length > 0) {
                         <ul class="book-list mb-0">
-                          @for (libro of user.librosPrestados; track $index) {
-                            <li title="{{ libro }}">
-                              <span class="book-icon small">📘</span> {{ libro }}
+                          
+                          @for (libro of user.librosPrestados; track libro._id) {
+                            <li title="{{ libro.titulo }}">
+                              <span class="book-icon small">📘</span>
+                              <span class="book-title">{{ libro.titulo }}</span>
+                              <button 
+                                class="btn btn-outline-primary btn-sm btn-devolver"
+                                (click)="onDevolver(libro._id, libro.titulo, user.username)"
+                                title="Forzar devolución de este libro">
+                                Devolver
+                              </button>
                             </li>
                           }
                         </ul>

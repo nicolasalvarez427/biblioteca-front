@@ -7,6 +7,10 @@ import { BookFormComponent } from './pages/book-form/book-form';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import { UserListComponent } from './pages/user-list/user-list';
+import { AdminLoanFormComponent } from './pages/admin-loan-form/admin-loan-form';
+
+// --- 🟢 CAMBIO: Importamos el nuevo componente ---
+import { BookSearchComponent } from './pages/book-search/book-search';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -16,10 +20,14 @@ export const routes: Routes = [
   // 🔹 Usuarios autenticados
   { path: 'books', component: BookListComponent, canActivate: [authGuard] },
   { path: 'mis-prestamos', component: LoanHistoryComponent, canActivate: [authGuard] },
+  
+  // --- 🟢 CAMBIO: Añadimos la nueva ruta de búsqueda ---
+  { path: 'buscar', component: BookSearchComponent, canActivate: [authGuard] },
 
   // 🔹 Solo administradores
   { path: 'admin/libros', component: BookListComponent, canActivate: [authGuard, adminGuard] },
   { path: 'admin/libros/nuevo', component: BookFormComponent, canActivate: [authGuard, adminGuard] },
   { path: 'admin/libros/editar/:id', component: BookFormComponent, canActivate: [authGuard, adminGuard] },
-  { path: 'admin/usuarios', component: UserListComponent, canActivate: [authGuard, adminGuard] }
+  { path: 'admin/usuarios', component: UserListComponent, canActivate: [authGuard, adminGuard] },
+  { path: 'admin/prestamos/nuevo', component: AdminLoanFormComponent, canActivate: [authGuard, adminGuard] }
 ];
