@@ -28,50 +28,63 @@
   border-top-right-radius: calc(0.5rem - 1px);
 }
 
-/* --- PERSONALIZACIÓN DE FLECHAS DEL CARRUSEL (Aseguramos que estén FUERA) --- */
+/* --- 🟢 AJUSTES DE FLECHAS Y POSICIONAMIENTO 🟢 --- */
 
-/* 1. Aumentar el tamaño de los iconos de las flechas */
+/* 1. Definimos la zona de deslizamiento de los libros */
+.carousel-inner {
+  /* Padding horizontal grande (5rem) para liberar el espacio a los lados de los libros */
+  padding: 1rem 5rem !important; 
+  min-height: 750px;
+}
+
+/* 2. Estilo de los Iconos */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-  width: 4rem;    /* Tamaño del icono */
-  height: 4rem;
-  filter: drop-shadow(0px 0px 5px rgba(255, 255, 255, 0.8));
+  width: 3.5rem;    
+  height: 3.5rem;
+  /* Sombra para que destaque sobre cualquier fondo */
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 1)); 
+  background-size: 100%, 100%;
 }
 
-/* 2. Posicionamiento y zona de clic */
+/* 3. Posicionamiento de la zona de Control (CLAVE) */
 .carousel-control-prev,
 .carousel-control-next {
-  width: 10%;       /* Ancho de la zona clicable */
-  height: 100%;     /* Ocupa toda la altura del carrusel */
+  width: 5rem;       /* Ancho fijo para la zona de control */
+  height: 100%;
   top: 0;
-  opacity: 1;       /* Siempre visible */
+  opacity: 1;        /* Siempre visible */
+  z-index: 10;
   transition: all 0.3s ease;
-  z-index: 10;      /* Asegura que esté por encima de las cards */
+  
+  background-color: rgba(0, 0, 0, 0.2); 
 }
 
-/* 3. Mover fuera del relleno del card-body (que es p-4) */
+/* Flecha de la Izquierda (PREV) */
 .carousel-control-prev {
-  left: -30px; /* Desplazamiento negativo para sacarlo del padding */
-  background: linear-gradient(to right, rgba(0,0,0,0.3), transparent);
+  /* Ajustamos la posición para que quede exactamente al inicio del carousel-inner */
+  left: 0; 
+  /* Alineamos el icono al centro-derecha de su zona de control */
+  justify-content: flex-end;
+  padding-right: 1rem;
 }
 
+/* Flecha de la Derecha (NEXT) */
 .carousel-control-next {
-  right: -30px; /* Desplazamiento negativo para sacarlo del padding */
-  background: linear-gradient(to left, rgba(0,0,0,0.3), transparent);
+  /* Ajustamos la posición para que quede exactamente al final del carousel-inner */
+  right: 0; 
+  /* Alineamos el icono al centro-izquierda de su zona de control */
+  justify-content: flex-start;
+  padding-left: 1rem;
 }
 
-/* 4. Efecto hover para indicar interactividad */
+/* 4. Efecto hover */
 .carousel-control-prev:hover,
 .carousel-control-next:hover {
   background-color: rgba(0, 0, 0, 0.4); 
 }
 
-/* 5. Estilos de paginación (Mantenemos los estilos numéricos) */
-.carousel-inner {
-  padding: 1rem 4rem;
-  min-height: 750px;
-}
-
+/* 5. Estilos de paginación */
 .carousel-indicators {
   position: relative;
   bottom: auto; left: auto; right: auto;

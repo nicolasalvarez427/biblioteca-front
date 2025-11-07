@@ -8,36 +8,37 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive],
   template: `
-    <nav class="navbar navbar-dark bg-primary sticky-top shadow-sm px-3">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm px-3">
       <div class="container-fluid d-flex align-items-center text-nowrap">
         
-        <a class="navbar-brand fw-bold d-flex align-items-center me-0" routerLink="/books">
-          <span class="fs-2 me-2">📖</span> 
-          <span class="d-none d-xl-inline">Biblioteca</span>
-        </a>
+        <div class="navbar-brand fw-bold d-flex align-items-center me-4">
+          <span class="fs-4 me-2">📖</span> 
+          <span>Biblioteca</span>
+        </div>
 
         @if (authService.isAuthenticated()) {
           <div class="d-flex flex-grow-1 justify-content-evenly align-items-center mx-3 overflow-auto custom-scroll">
             
             <a class="nav-link" routerLink="/books" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-              <span class="me-1">📚</span> <span class="d-none d-lg-inline">Catálogo</span>
+              <span class="me-1">📚</span> Catálogo
             </a>
             <a class="nav-link" routerLink="/buscar" routerLinkActive="active">
-              <span class="me-1">🔎</span> <span class="d-none d-lg-inline">Buscador</span>
+              <span class="me-1">🔎</span> Buscador
             </a>
             <a class="nav-link" routerLink="/mis-prestamos" routerLinkActive="active">
-              <span class="me-1">📂</span> <span class="d-none d-lg-inline">Mis Préstamos</span>
+              <span class="me-1">📂</span> Mis Préstamos
             </a>
 
             @if (authService.isAdmin()) {
-              <div class="vr text-light opacity-25 mx-2 d-none d-md-block"></div> <a class="nav-link admin-link" routerLink="/admin/libros/nuevo" routerLinkActive="active">
-                <span class="me-1">➕</span> <span class="d-none d-xl-inline">Nuevo Libro</span>
+              <div class="vr text-light opacity-25 mx-2 d-none d-md-block"></div>
+              <a class="nav-link admin-link" routerLink="/admin/libros/nuevo" routerLinkActive="active">
+                <span class="me-1">➕</span> Nuevo Libro
               </a>
               <a class="nav-link admin-link" routerLink="/admin/prestamos/nuevo" routerLinkActive="active">
-                <span class="me-1">📝</span> <span class="d-none d-xl-inline">Préstamo</span>
+                <span class="me-1">📝</span> Préstamo
               </a>
               <a class="nav-link admin-link" routerLink="/admin/usuarios" routerLinkActive="active">
-                <span class="me-1">👥</span> <span class="d-none d-xl-inline">Usuarios</span>
+                <span class="me-1">👥</span> Usuarios
               </a>
             }
 
@@ -50,12 +51,13 @@ import { AuthService } from '../../services/auth.service';
           @if (authService.isAuthenticated()) {
             
             <div class="d-flex align-items-center text-light">
-              <span class="badge fw-bold me-2 d-none d-md-inline-block" 
+              <span class="badge fw-bold me-2" 
                     [ngClass]="{
                       'bg-warning text-dark': authService.currentUser()?.role === 'Administrador',
                       'bg-info text-dark': authService.currentUser()?.role === 'Estudiante'
-                    }">
-                {{ authService.currentUser()?.role | slice:0:1 }}
+                    }"
+                    style="font-size: 0.75rem; letter-spacing: 0.5px;">
+                {{ authService.currentUser()?.role | uppercase }}
               </span>
               <span class="fw-semibold d-none d-md-block" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis;">
                 {{ authService.currentUser()?.username }}
@@ -66,7 +68,7 @@ import { AuthService } from '../../services/auth.service';
 
             <button class="btn btn-danger btn-sm d-flex align-items-center fw-semibold shadow-sm" 
                     (click)="logout()" title="Cerrar Sesión">
-              <span class="fs-6">🚪</span>
+              <span class="fs-6 me-2">🚪</span> Cerrar Sesión
             </button>
 
           } @else {
@@ -83,18 +85,23 @@ import { AuthService } from '../../services/auth.service';
     .navbar { z-index: 1030; height: 60px; }
 
     .nav-link {
-      color: rgba(255,255,255,0.85) !important;
+      /* Color base distinto y Fondo Sutil */
+      color: #fff !important; 
       padding: 0.5rem 0.8rem !important;
       border-radius: 50px;
       transition: all 0.2s ease;
-      white-space: nowrap; /* Evita que el texto de los enlaces se rompa en dos líneas */
-
+      white-space: nowrap; 
+      background-color: rgba(255, 255, 255, 0.1); 
+      
+      /* Hover Distintivo */
       &:hover {
         color: #fff !important;
-        background-color: rgba(255, 255, 255, 0.15);
-        transform: translateY(-2px);
+        background-color: rgba(255, 255, 255, 0.25); 
+        transform: scale(1.05) translateY(-2px); 
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
       }
 
+      /* Estado Activo */
       &.active {
         background-color: #fff !important;
         color: var(--bs-primary) !important;
@@ -103,14 +110,6 @@ import { AuthService } from '../../services/auth.service';
       }
     }
 
-    .admin-link {
-      /* Un toque sutilmente diferente para los links de admin si quieres */
-      &.active {
-         color: var(--bs-indigo) !important; /* Opcional: un color distinto para admin activo */
-      }
-    }
-    
-    /* Para que si la pantalla es MUY pequeña, se pueda hacer scroll horizontal en el menú en lugar de romper todo */
     .custom-scroll::-webkit-scrollbar { height: 4px; }
     .custom-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); }
     .custom-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.5); border-radius: 4px; }
@@ -120,7 +119,6 @@ export class HeaderComponent {
   public authService = inject(AuthService);
   private router = inject(Router);
 
-  // Ya no necesitamos señales para el menú desplegable
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);

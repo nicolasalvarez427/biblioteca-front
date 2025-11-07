@@ -1,5 +1,5 @@
 /* src/styles.scss */
-/* 🔴 ESTA LÍNEA DEBE ESTAR COMENTADA O ELIMINADA: @use "bootstrap/scss/bootstrap" as *; */
+/* 🔴 NOTA: Asumiendo que has aplicado el fix de Bootstrap en angular.json 🔴 */
 
 html, body {
   height: 100%;
@@ -10,13 +10,23 @@ html, body {
   background-color: #e9ecef;
 }
 
+/* 🟢 CORRECCIÓN 1: Sticky Footer 🟢 */
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* El contenedor principal debe tener la altura mínima de la ventana */
+}
+
 /* --- CENTRADO GLOBAL PARA TODAS LAS PÁGINAS --- */
 main {
   display: flex !important;
   flex-direction: column;
-  flex-grow: 1;
-  align-items: center;      /* Centrado horizontal */
-  justify-content: center;  /* Centrado vertical */
+  flex-grow: 1;  /* CLAVE: Esto asegura que el main ocupe el espacio restante y empuje el footer */
+  align-items: center;
+  justify-content: center;
+  
+  /* Añadimos padding vertical aquí para que el contenido no pegue a los bordes superior/inferior del main */
+  padding: 1.5rem 0; 
 }
 
 main > * {
@@ -77,4 +87,3 @@ main > * {
   right: 0;
   background-image: linear-gradient(to left, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%);
 }
-/* ---------------------------------------------------- */
