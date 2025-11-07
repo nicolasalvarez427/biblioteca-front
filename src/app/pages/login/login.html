@@ -6,44 +6,37 @@
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      
       <div class="mb-3">
         <label for="email" class="form-label fw-semibold">Correo Electrónico</label>
-        <input type="email" id="email" class="form-control" formControlName="email"
-               placeholder="nombre@ejemplo.com"
+        <input type="email" id="email" class="form-control" formControlName="email" placeholder="nombre@ejemplo.com"
                [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
         @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
-          <div class="invalid-feedback">
-            @if (loginForm.get('email')?.hasError('required')) {
-              Correo requerido.
-            } @else if (loginForm.get('email')?.hasError('email')) {
-              Formato de correo inválido.
-            }
-          </div>
+          <div class="invalid-feedback">Correo válido requerido.</div>
         }
       </div>
-      <div class="mb-4"> <label for="password" class="form-label fw-semibold">Contraseña</label>
-        <input type="password" id="password" class="form-control" formControlName="password"
-               [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+
+      <div class="mb-4">
+        <label for="password" class="form-label fw-semibold">Contraseña</label>
+        <div class="input-group">
+          <input [type]="showPassword() ? 'text' : 'password'" 
+                 id="password" class="form-control" formControlName="password"
+                 [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
+            {{ showPassword() ? '🙈' : '👁️' }}
+          </button>
+        </div>
         @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-          <div class="invalid-feedback">Contraseña requerida.</div>
+          <div class="text-danger small mt-1">Contraseña requerida.</div>
         }
       </div>
 
       @if (errorMessage()) {
-        <div class="alert alert-danger py-2 small text-center rounded-3 mb-4" role="alert">
-          {{ errorMessage() }}
-        </div>
+        <div class="alert alert-danger py-2 small text-center rounded-3 mb-4">{{ errorMessage() }}</div>
       }
 
       <div class="d-grid">
         <button type="submit" class="btn btn-primary fw-bold" [disabled]="isLoading() || loginForm.invalid">
-          @if (isLoading()) {
-            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-            Ingresando...
-          } @else {
-            Iniciar Sesión
-          }
+          {{ isLoading() ? 'Ingresando...' : 'Iniciar Sesión' }}
         </button>
       </div>
     </form>

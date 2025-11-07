@@ -7,52 +7,77 @@
     </div>
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-
       <div class="row">
         <div class="col-md-6 mb-3">
           <label for="firstName" class="form-label fw-semibold">Nombre</label>
           <input type="text" id="firstName" class="form-control" formControlName="firstName"
                  [class.is-invalid]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched">
-          </div>
+        </div>
         <div class="col-md-6 mb-3">
           <label for="lastName" class="form-label fw-semibold">Apellido</label>
           <input type="text" id="lastName" class="form-control" formControlName="lastName"
                  [class.is-invalid]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched">
-           </div>
+        </div>
       </div>
 
       <div class="mb-3">
         <label for="email" class="form-label fw-semibold">Correo Electrónico</label>
         <input type="email" id="email" class="form-control" formControlName="email" placeholder="nombre@ejemplo.com"
                [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label fw-semibold">Contraseña</label>
+        <div class="input-group">
+          <input [type]="showPassword() ? 'text' : 'password'" 
+                 id="password" class="form-control" formControlName="password" placeholder="******"
+                 (input)="checkPasswordStrength($event)"
+                 [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+          <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
+            {{ showPassword() ? '🙈' : '👁️' }}
+          </button>
         </div>
+        @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+           <div class="text-danger small mt-1">Mínimo 6 caracteres.</div>
+        }
+        @if (registerForm.get('password')?.value) {
+          <div class="mt-2">
+            <div class="d-flex justify-content-between small mb-1">
+               <span class="text-muted">Seguridad:</span>
+               <span class="fw-bold" [ngClass]="'text-' + passwordStrength().color">{{ passwordStrength().message }}</span>
+            </div>
+            <div class="progress" style="height: 8px;">
+              <div class="progress-bar" [ngClass]="'bg-' + passwordStrength().color" role="progressbar" 
+                   [style.width.%]="passwordStrength().score"></div>
+            </div>
+          </div>
+        }
+      </div>
 
       <div class="mb-4">
-        <label for="password" class="form-label fw-semibold">Contraseña</label>
-        <input type="password" id="password" class="form-control" formControlName="password" placeholder="******"
-               [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+        <label for="confirmPassword" class="form-label fw-semibold">Confirmar Contraseña</label>
+        <div class="input-group">
+          <input [type]="showPassword() ? 'text' : 'password'" 
+                 id="confirmPassword" class="form-control" formControlName="confirmPassword" placeholder="Repite tu contraseña"
+                 [class.is-invalid]="(registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.invalid) || (registerForm.errors?.['mismatch'] && registerForm.get('confirmPassword')?.touched)">
         </div>
+        
+        @if (registerForm.get('confirmPassword')?.hasError('required') && registerForm.get('confirmPassword')?.touched) {
+          <div class="text-danger small mt-1">Debes confirmar tu contraseña.</div>
+        }
+        @if (registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched && !registerForm.get('confirmPassword')?.hasError('required')) {
+          <div class="text-danger fw-bold small mt-1">❌ Las contraseñas no coinciden.</div>
+        }
+      </div>
 
-      @if (errorMessage()) {
-        <div class="alert alert-danger py-2 small text-center rounded-3 mb-4" role="alert">{{ errorMessage() }}</div>
-      }
-      @if (successMessage()) {
-        <div class="alert alert-success py-2 small text-center rounded-3 mb-4" role="alert">
-          <span [innerHTML]="successMessage()"></span>
-        </div>
-      }
+      @if (errorMessage()) { <div class="alert alert-danger py-2 small text-center rounded-3 mb-4">{{ errorMessage() }}</div> }
+      @if (successMessage()) { <div class="alert alert-success py-2 small text-center rounded-3 mb-4"><span [innerHTML]="successMessage()"></span></div> }
 
       <div class="d-grid">
         <button type="submit" class="btn btn-success fw-bold" [disabled]="isLoading() || registerForm.invalid">
-          @if (isLoading()) {
-            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-            Registrando...
-          } @else {
-            ¡Registrarme!
-          }
+          {{ isLoading() ? 'Registrando...' : '¡Registrarme!' }}
         </button>
       </div>
-
     </form>
 
     <div class="text-center mt-4 pt-3 border-top">

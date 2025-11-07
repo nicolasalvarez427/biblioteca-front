@@ -28,64 +28,73 @@
   border-top-right-radius: calc(0.5rem - 1px);
 }
 
-// --- 🔴 ELIMINAMOS LOS ESTILOS DEL CARRUSEL ANTERIOR (nth-child, etc.) ---
-// ... (Borra todos los estilos que empezaban con #bookCarousel o .carousel-item) ...
+/* --- PERSONALIZACIÓN DE FLECHAS DEL CARRUSEL (Aseguramos que estén FUERA) --- */
 
+/* 1. Aumentar el tamaño de los iconos de las flechas */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  width: 4rem;    /* Tamaño del icono */
+  height: 4rem;
+  filter: drop-shadow(0px 0px 5px rgba(255, 255, 255, 0.8));
+}
 
-// --- 🟢 AÑADIMOS ESTILOS PARA LA PAGINACIÓN NUMÉRICA 🟢 ---
+/* 2. Posicionamiento y zona de clic */
+.carousel-control-prev,
+.carousel-control-next {
+  width: 10%;       /* Ancho de la zona clicable */
+  height: 100%;     /* Ocupa toda la altura del carrusel */
+  top: 0;
+  opacity: 1;       /* Siempre visible */
+  transition: all 0.3s ease;
+  z-index: 10;      /* Asegura que esté por encima de las cards */
+}
+
+/* 3. Mover fuera del relleno del card-body (que es p-4) */
+.carousel-control-prev {
+  left: -30px; /* Desplazamiento negativo para sacarlo del padding */
+  background: linear-gradient(to right, rgba(0,0,0,0.3), transparent);
+}
+
+.carousel-control-next {
+  right: -30px; /* Desplazamiento negativo para sacarlo del padding */
+  background: linear-gradient(to left, rgba(0,0,0,0.3), transparent);
+}
+
+/* 4. Efecto hover para indicar interactividad */
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  background-color: rgba(0, 0, 0, 0.4); 
+}
+
+/* 5. Estilos de paginación (Mantenemos los estilos numéricos) */
 .carousel-inner {
-  // Damos espacio para que las tarjetas no choquen con las flechas
-  // y para que se vean bien las 2 filas
   padding: 1rem 4rem;
-  min-height: 750px; // Evita que el carrusel salte de altura
+  min-height: 750px;
 }
 
 .carousel-indicators {
-  position: relative; // Lo sacamos de la posición absoluta
-  bottom: auto;
-  left: auto;
-  right: auto;
-  margin: 1.5rem 0 0 0; // Espacio entre el carrusel y los números
+  position: relative;
+  bottom: auto; left: auto; right: auto;
+  margin: 1.5rem 0 0 0;
   padding: 0;
   justify-content: center;
-  gap: 0.5rem; // Espacio entre botones
+  gap: 0.5rem;
 }
 
 .carousel-indicators button {
-  width: 2.2rem;
-  height: 2.2rem;
-  line-height: 2.2rem;
-  border-radius: 50%; // Círculo
-  text-indent: 0;     // Mostramos el número
-  font-weight: 600;
-  font-size: 0.9rem;
+  width: 2.2rem; height: 2.2rem; line-height: 2.2rem; border-radius: 50%;
+  text-indent: 0; font-weight: 600; font-size: 0.9rem;
   border: 1px solid var(--bs-primary);
   background-color: transparent;
   color: var(--bs-primary);
-  opacity: 0.7;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  opacity: 0.7; transition: all 0.3s ease;
+  display: flex; align-items: center; justify-content: center;
 }
 
 .carousel-indicators button.active {
-  opacity: 1;
-  background-color: var(--bs-primary);
-  color: #fff;
+  opacity: 1; background-color: var(--bs-primary); color: #fff;
 }
 
 .carousel-indicators button:hover {
   opacity: 1;
-}
-
-.carousel-control-prev,
-.carousel-control-next {
-    // Ajustamos las flechas para que estén a los lados
-    width: 5%;
-    .carousel-control-prev-icon,
-    .carousel-control-next-icon {
-      filter: invert(1) drop-shadow(0 0 2px rgba(0,0,0,0.5));
-      background-size: 60%;
-    }
 }

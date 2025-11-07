@@ -40,7 +40,7 @@ import { AuthService } from '../../services/auth.service';
       
       <hr class="opacity-50 mt-0">
       
-      <ul class="nav nav-pills flex-column mb-auto nav-scrollable custom-scroll">
+      <ul class="nav nav-pills flex-column nav-scrollable custom-scroll">
         
         @if (authService.isAuthenticated()) {
           <li class="nav-item mb-2 mt-2">
@@ -89,16 +89,27 @@ import { AuthService } from '../../services/auth.service';
             </li>
           }
         } @else {
-           <li class="mt-3">
-            <a routerLink="/login" class="nav-link d-flex align-items-center justify-content-center fw-bold py-3 login-link" 
+           <li class="nav-item mb-2 mt-2">
+            <span class="text-uppercase text-white-50 fw-bold ms-1 category-title">Bienvenido</span>
+          </li>
+           <li class="nav-item">
+            <a routerLink="/login" class="nav-link d-flex align-items-center py-3" 
                routerLinkActive="active" (click)="close()">
-               <span class="me-2 fs-4">🔐</span> Iniciar Sesión
+               <span class="me-3 icon-size">🔐</span> Iniciar Sesión
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/register" class="nav-link d-flex align-items-center py-3" 
+               routerLinkActive="active" (click)="close()">
+               <span class="me-3 icon-size">📝</span> Registrarse
             </a>
           </li>
         }
 
       </ul>
       
+      <div class="flex-grow-1"></div>
+
       @if (authService.isAuthenticated()) {
         <div class="mt-3 pt-3 border-top border-white border-opacity-25">
           <button class="btn btn-danger w-100 py-2 fw-semibold d-flex align-items-center justify-content-center logout-btn" 
@@ -117,31 +128,26 @@ import { AuthService } from '../../services/auth.service';
       background-image: linear-gradient(180deg, var(--bs-primary) 0%, #0a58ca 100%);
     }
 
-    /* 🟢 NUEVA CLASE: Controla el scroll y evita el desbordamiento horizontal 🟢 */
     .nav-scrollable {
-      overflow-y: auto;       /* Permite scroll vertical si la lista es larga */
-      overflow-x: hidden;     /* ¡CLAVE! Oculta el desbordamiento horizontal por la animación */
-      max-height: calc(100vh - 220px); /* Altura máxima para no empujar el botón de salir fuera */
+      overflow-y: auto; overflow-x: hidden; padding: 2px 0;
     }
 
     .nav-pills .nav-link {
-      font-size: 1.05rem; padding: 0.85rem 1rem; border-radius: 12px; margin-bottom: 8px;
-      font-weight: 500; transition: all 0.25s ease;
+      font-size: 1.05rem; padding: 0.85rem 1rem; border-radius: 12px;
+      margin-bottom: 8px; font-weight: 500; transition: all 0.25s ease;
       background-color: rgba(0, 0, 0, 0.15); color: rgba(255, 255, 255, 0.85); border: 1px solid rgba(255,255,255,0.05);
 
       &:hover {
         background-color: rgba(255, 255, 255, 0.25); color: #fff;
-        transform: translateX(4px); /* Esto causaba el problema, ahora overflow-x: hidden lo soluciona */
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transform: translateX(4px); box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       }
-
       &.active {
         background-color: #fff !important; color: var(--bs-primary) !important; font-weight: 700;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       }
     }
 
-    .login-link { background-color: rgba(255, 255, 255, 0.1) !important; border: 2px dashed rgba(255,255,255,0.3) !important; &:hover { background-color: rgba(255, 255, 255, 0.2) !important; } }
+    .nav-pills .nav-item:last-child .nav-link { margin-bottom: 0 !important; }
     .logout-btn { transition: all 0.2s; &:hover { transform: scale(1.02); box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3); } }
     .icon-size { font-size: 1.4rem; }
     .category-title { font-size: 0.8rem; letter-spacing: 1.5px; opacity: 0.8; }
