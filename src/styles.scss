@@ -1,5 +1,5 @@
 /* src/styles.scss */
-@use "bootstrap/scss/bootstrap" as *;
+/* 🔴 ESTA LÍNEA DEBE ESTAR COMENTADA O ELIMINADA: @use "bootstrap/scss/bootstrap" as *; */
 
 html, body {
   height: 100%;
@@ -47,36 +47,32 @@ main > * {
   border-color: rgba(0, 0, 0, 0.05) !important;
 }
 
-/* --- CAMBIOS PARA LAS FLECHAS DEL CARRUSEL --- */
-/* Aumentar el tamaño del icono de las flechas */
+/* --- CORRECCIÓN Y ESTILOS PARA FLECHAS DEL CARRUSEL --- */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-  width: 3rem;   /* Aumenta el ancho */
-  height: 3rem;  /* Aumenta la altura */
-  background-size: 100%, 100%; /* Asegura que la imagen de fondo se escale bien */
-  filter: drop-shadow(0 0 5px rgba(0,0,0,0.7)); /* Sombra para que destaque más */
+  width: 3rem;
+  height: 3rem;
+  background-size: 100%, 100%;
+  filter: drop-shadow(0 0 5px rgba(0,0,0,0.7));
 }
 
-/* Fondo de los botones de control (el círculo/rectángulo detrás de la flecha) */
 .carousel-control-prev,
 .carousel-control-next {
-  width: 8%; /* Aumenta el área del botón de control */
-  opacity: 1; /* Asegura que no sea translúcido por defecto */
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 100%); /* Efecto de gradiente sutil para el fondo */
+  width: 8%;
+  opacity: 1;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 100%);
   
   &:hover {
-    background-color: rgba(0, 0, 0, 0.4); /* Fondo más oscuro al pasar el mouse */
+    background-color: rgba(0, 0, 0, 0.4);
     opacity: 1;
   }
 }
 
-/* Ajuste específico para el control PREV */
 .carousel-control-prev {
   left: 0;
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
-/* Ajuste específico para el control NEXT */
 .carousel-control-next {
   right: 0;
   background-image: linear-gradient(to left, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%);
