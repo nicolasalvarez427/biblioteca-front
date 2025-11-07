@@ -1,0 +1,55 @@
+<div class="container mt-5 mb-5">
+  <div class="text-center mb-4">
+    <h2 class="display-6 fw-bold text-primary">👥 Lista de Usuarios</h2>
+    <p class="text-muted">Solo visible para administradores</p>
+  </div>
+
+  @if (isLoading()) {
+    <div class="d-flex justify-content-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  } @else {
+    <div class="table-responsive shadow-sm rounded">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-primary text-center">
+          <tr>
+            <th>Nombre de Usuario</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of users(); track user._id) {
+            <tr class="text-center">
+              <td>{{ user.username }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <span class="badge rounded-pill px-3 py-2 fw-semibold"
+                      [class.bg-info]="user.role === 'Estudiante'"
+                      [class.bg-warning]="user.role === 'Administrador'"
+                      [class.text-dark]="true">
+                  {{ user.role }}
+                </span>
+              </td>
+              <td>
+                <button class="btn btn-outline-danger btn-sm fw-semibold"
+                        (click)="onDelete(user._id, user.username)">
+                  🗑️ Eliminar
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="4" class="text-center py-4 text-muted">
+                No se encontraron usuarios registrados.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

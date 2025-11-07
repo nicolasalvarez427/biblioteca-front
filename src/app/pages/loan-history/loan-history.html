@@ -1,66 +1,78 @@
-<div class="container py-4">
-  <h2 class="mb-4 text-center">📖 Historial de Préstamos</h2>
+<div class="container mt-5 mb-5">
+  <h2 class="text-center text-primary fw-bold mb-4">Mis Préstamos</h2>
 
-  <!-- 🌀 Loader -->
-  <div *ngIf="isLoading(); else loanList" class="text-center py-5">
-    <div class="spinner-border text-primary" role="status"></div>
-    <p class="mt-2">Cargando préstamos...</p>
-  </div>
-
-  <!-- 📚 Lista de préstamos -->
-  <ng-template #loanList>
-    <div *ngIf="loans().length > 0; else noLoans" class="row g-4">
-      <div class="col-md-6 col-lg-4" *ngFor="let loan of loans()">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">{{ loan.libro.titulo }}</h5>
-            <p class="card-text">
-              <strong>Autor:</strong> {{ loan.libro.autor || 'Desconocido' }}
-            </p>
-            <p class="card-text mb-1">
-              <strong>Fecha préstamo:</strong>
-              {{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}
-            </p>
-            <p class="card-text mb-1">
-              <strong>Fecha devolución:</strong>
-              {{ loan.fechaDevolucion | date:'dd/MM/yyyy' }}
-            </p>
-            <p class="card-text mb-1" *ngIf="loan.fechaDevuelto">
-              <strong>Fecha devuelto:</strong>
-              {{ loan.fechaDevuelto | date:'dd/MM/yyyy' }}
-            </p>
-
-            <p class="card-text" *ngIf="!loan.devuelto">
-              <strong>Días restantes:</strong>
-              {{ getDaysRemaining(loan.fechaDevolucion) }} días
-            </p>
-
-            <p class="card-text">
-              <strong>Duración del préstamo:</strong>
-              {{ getLoanDuration(loan.fechaPrestamo, loan.fechaDevuelto || loan.fechaDevolucion) }} días
-            </p>
-
-            <div class="mt-3" *ngIf="!loan.devuelto">
-              <button class="btn btn-success w-100" (click)="onReturn(loan)">
-                📦 Devolver libro
-              </button>
-            </div>
-
-            <div class="mt-3" *ngIf="loan.devuelto">
-              <button class="btn btn-secondary w-100" disabled>
-                ✅ Devuelto
-              </button>
-            </div>
-          </div>
-        </div>
+  @if (isLoading()) {
+    <div class="d-flex justify-content-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
       </div>
     </div>
-
-    <!-- 📭 Sin préstamos -->
-    <ng-template #noLoans>
-      <div class="text-center py-5">
-        <p class="text-muted fs-5">No tienes préstamos registrados.</p>
+  } @else {
+    @if (loans().length === 0) {
+      <div class="alert alert-info text-center p-4">
+        <h4>No tienes préstamos registrados</h4>
+        <p class="mb-0">Ve al catálogo y pide tu primer libro.</p>
       </div>
-    </ng-template>
-  </ng-template>
+    } @else {
+      <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover align-middle mb-0 bg-white">
+          <thead class="table-primary">
+            <tr>
+              <th>Libro</th>
+              <th>Fecha Préstamo</th>
+              <th>Estado / Fecha Límite</th>
+              <th>Acción / Duración</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (loan of loans(); track loan._id) {
+              <tr [class.table-light]="loan.devuelto">
+                <td>
+                  <div class="d-flex align-items-center">
+                    @if (loan.libro.imagenUrl) {
+                      <img [src]="loan.libro.imagenUrl" alt="Portada" class="me-3 rounded shadow-sm" style="width: 45px; height: 65px; object-fit: cover;">
+                    }
+                    <div>
+                      <div class="fw-bold text-dark">{{ loan.libro.titulo }}</div>
+                      <small class="text-muted">{{ loan.libro.autor }}</small>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</td>
+                <td>
+                  @if (!loan.devuelto) {
+                     @let daysLeft = getDaysRemaining(loan.fechaDevolucion);
+                     @if (daysLeft < 0) {
+                       <span class="badge bg-danger mb-1">Vencido hace {{ daysLeft * -1 }} días</span>
+                     } @else if (daysLeft <= 2) {
+                       <span class="badge bg-warning text-dark mb-1">Vence pronto ({{ daysLeft }} días)</span>
+                     } @else {
+                       <span class="badge bg-success mb-1">Activo ({{ daysLeft }} días restantes)</span>
+                     }
+                     <br>
+                     <small class="text-muted">Límite: {{ loan.fechaDevolucion | date:'dd/MM/yyyy' }}</small>
+                  } @else {
+                    <span class="badge bg-secondary mb-1">Devuelto</span>
+                    <br>
+                    <small class="text-muted">El: {{ loan.fechaRetornoReal | date:'dd/MM/yyyy' }}</small>
+                  }
+                </td>
+                <td>
+                  @if (!loan.devuelto) {
+                    <button class="btn btn-sm btn-outline-primary fw-semibold" (click)="onReturn(loan)">
+                      Devolver Libro
+                    </button>
+                  } @else {
+                    <span class="text-muted small">
+                      Lo tuviste por {{ getLoanDuration(loan.fechaPrestamo, loan.fechaRetornoReal!) }} días
+                    </span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
 </div>

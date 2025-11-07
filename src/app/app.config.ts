@@ -1,14 +1,16 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptors } from '@angular/common/http'; // 👈 Importa withInterceptors
+import { provideHttpClient, withInterceptors } from '@angular/common/http'; // <-- Importar withInterceptors
 import { ReactiveFormsModule } from '@angular/forms';
 import { routes } from './app.routes';
-import { authInterceptor } from './core/interceptors/auth.interceptor'; // 👈 Importa tu interceptor
+// Importa tu interceptor
+import { authInterceptor } from './core/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor])), // 👈 Regístralo aquí
+    // AQUÍ ESTÁ LA CLAVE: Registramos el interceptor para que Angular lo use
+    provideHttpClient(withInterceptors([authInterceptor])),
     importProvidersFrom(ReactiveFormsModule)
   ]
 };

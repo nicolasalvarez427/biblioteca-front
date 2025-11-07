@@ -1,9 +1,9 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BookService } from '../../services/book.service';
-import { Book } from '../../models/book.model';
-import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { BookService } from '../../services/book.service';
+import { AuthService } from '../../services/auth.service';
+import { Book } from '../../models/book.model';
 
 @Component({
   selector: 'app-book-list',
@@ -13,47 +13,73 @@ import { Router } from '@angular/router';
   styleUrls: ['./book-list.scss']
 })
 export class BookListComponent implements OnInit {
-  private bookService = inject(BookService);
-  public authService = inject(AuthService);
-  private router = inject(Router);
+  private readonly bookService = inject(BookService);
+  public readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   public books = signal<Book[]>([]);
   public isLoading = signal<boolean>(true);
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadBooks();
   }
 
-  loadBooks() {
+  loadBooks(): void {
+    this.isLoading.set(true);
     this.bookService.getBooks().subscribe({
       next: (data) => {
         this.books.set(data);
         this.isLoading.set(false);
       },
       error: (err) => {
-        console.error(err);
+        console.error('Error cargando libros:', err);
         this.isLoading.set(false);
       }
     });
   }
 
-  onLoan(book: Book) {
+  onLoan(book: Book): void {
     if (!this.authService.isAuthenticated()) {
       alert('Debes iniciar sesión para pedir un libro.');
       this.router.navigate(['/login']);
       return;
     }
 
-    if (!confirm(`¿Confirmas el préstamo de "${book.titulo}"?`)) return;
+    if (!book.disponible) {
+      alert('Este libro no está disponible actualmente.');
+      return;
+    }
 
-    this.bookService.solicitarPrestamo(book._id).subscribe({
-      next: () => {
-        alert('✅ ¡Préstamo realizado con éxito!');
-        this.loadBooks();
-      },
-      error: (err) => {
-        alert('❌ Error: ' + (err.error?.message || 'No se pudo realizar el préstamo.'));
-      }
-    });
+    if (confirm(`¿Confirmas el préstamo de "${book.titulo}"?`)) {
+      this.bookService.solicitarPrestamo(book._id).subscribe({
+        next: () => {
+          alert('✅ ¡Préstamo realizado con éxito!');
+          this.loadBooks();
+        },
+        error: (err) => {
+          const msg = err?.error?.message || 'No se pudo realizar el préstamo.';
+          alert(`❌ Error: ${msg}`);
+        }
+      });
+    }
+  }
+
+  onEdit(book: Book): void {
+    this.router.navigate(['/editar-libro', book._id]);
+  }
+
+  onDelete(book: Book): void {
+    if (confirm(`¿Seguro que quieres eliminar el libro "${book.titulo}"?`)) {
+      this.bookService.deleteBook(book._id).subscribe({
+        next: (res) => {
+          alert(`🗑️ ${res.message || 'Libro eliminado con éxito.'}`);
+          this.loadBooks();
+        },
+        error: (err) => {
+          const msg = err?.error?.message || 'No se pudo eliminar el libro.';
+          alert(`❌ Error: ${msg}`);
+        }
+      });
+    }
   }
 }

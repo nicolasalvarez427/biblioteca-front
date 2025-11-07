@@ -1,57 +1,63 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Book } from '../models/book.model';
 
-export interface Book {
-  _id: string;
-  titulo: string;
-  autor: string;
-  imagenUrl?: string;
-  disponible: boolean;
-  stock: number;
-}
-
+// ✅ Interfaz pública para los préstamos
 export interface Loan {
   _id: string;
-  libro: {
-    _id: string;
-    titulo: string;
-    autor: string;
-  };
-  usuario: string;
+  libro: Book;
   fechaPrestamo: string;
   fechaDevolucion: string;
-  fechaDevuelto?: string; // ← agrega esta línea (opcional, porque puede no existir)
+  fechaRetornoReal?: string;
   devuelto: boolean;
 }
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookService {
-  private apiUrl = 'http://localhost:4000/api/libros';
-  private prestamosUrl = 'http://localhost:4000/api/prestamos';
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = '/api/libros';
+  private readonly prestamosUrl = '/api/prestamos';
 
-  constructor(private http: HttpClient) {}
-
-  // 📚 Obtener libros
+  // 📚 Obtener todos los libros
   getBooks(): Observable<Book[]> {
     return this.http.get<Book[]>(this.apiUrl);
   }
 
-  // 🧾 Solicitar préstamo
+  // 🤝 Solicitar un préstamo
   solicitarPrestamo(libroId: string): Observable<any> {
     return this.http.post(`${this.prestamosUrl}/solicitar/${libroId}`, {});
   }
 
-  // 📘 Obtener préstamos del usuario autenticado
+  // 📖 Obtener préstamos del usuario actual
   getMisPrestamos(): Observable<Loan[]> {
     return this.http.get<Loan[]>(`${this.prestamosUrl}/mis-prestamos`);
   }
 
-  // 🔄 Devolver libro
+  // 🔙 Devolver un libro prestado
   devolverLibro(prestamoId: string): Observable<any> {
     return this.http.put(`${this.prestamosUrl}/devolver/${prestamoId}`, {});
+  }
+
+  // 🆕 Crear un nuevo libro (solo admin)
+  createBook(data: Partial<Book>): Observable<Book> {
+    return this.http.post<Book>(this.apiUrl, data);
+  }
+
+  // ✏️ Actualizar libro existente (solo admin)
+  updateBook(id: string, data: Partial<Book>): Observable<Book> {
+    return this.http.put<Book>(`${this.apiUrl}/${id}`, data);
+  }
+
+  // 🔍 Obtener un libro por ID
+  getBookById(id: string): Observable<Book> {
+    return this.http.get<Book>(`${this.apiUrl}/${id}`);
+  }
+
+  // 🗑️ Eliminar un libro (solo admin)
+  deleteBook(id: string): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
   }
 }
