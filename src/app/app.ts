@@ -8,7 +8,6 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-root',
   standalone: true,
-  // --- CAMBIO 2: Actualizamos imports ---
   imports: [CommonModule, RouterOutlet, SidebarComponent, FooterComponent],
   template: `
     <div class="d-flex w-100 min-vh-100 overflow-hidden">
@@ -37,7 +36,7 @@ import { CommonModule } from '@angular/common';
     /* En pantallas grandes, dejamos espacio a la izquierda para la barra fija */
     @media (min-width: 992px) {
       .main-content-wrapper {
-        margin-left: 280px; /* Debe coincidir con el ancho del sidebar */
+        margin-left: 240px; /* 🟢 CAMBIO: Coincide con el nuevo ancho del sidebar (240px) */
       }
     }
     /* Hacemos que el main tenga su propio scroll si el contenido es muy largo */
