@@ -27,16 +27,13 @@
   border-top-left-radius: calc(0.5rem - 1px);
   border-top-right-radius: calc(0.5rem - 1px);
 }
-
 /* --- 🟢 AJUSTES DE FLECHAS Y POSICIONAMIENTO 🟢 --- */
-
 /* 1. Definimos la zona de deslizamiento de los libros */
 .carousel-inner {
   /* Padding horizontal grande (5rem) para liberar el espacio a los lados de los libros */
   padding: 1rem 5rem !important; 
   min-height: 750px;
 }
-
 /* 2. Estilo de los Iconos */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {

@@ -19,8 +19,6 @@ export class BookListComponent implements OnInit {
 
   public allBooks = signal<Book[]>([]);
   public isLoading = signal<boolean>(true);
-  
-  // --- 🔴 CAMBIO: Eliminamos searchTerm y filteredBooks ---
 
   // --- 🟢 CAMBIO: bookPages ahora se calcula desde allBooks ---
   public bookPages = computed(() => {
@@ -51,10 +49,6 @@ export class BookListComponent implements OnInit {
       }
     });
   }
-  
-  // --- 🔴 CAMBIO: Eliminamos onSearch() ---
-
-  // ... (El resto de métodos onLoan, onEdit, onDelete se quedan igual) ...
   onLoan(book: Book): void {
     if (!this.authService.isAuthenticated()) {
       alert('Debes iniciar sesión para pedir un libro.');
