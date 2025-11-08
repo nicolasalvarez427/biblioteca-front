@@ -111,22 +111,48 @@
 .carousel-indicators button:hover {
   opacity: 1;
 }
+/* --- AJUSTES RESPONSIVOS PARA MÓVIL (2 COLUMNAS) --- */
 @media (max-width: 768px) {
+  
+  // 1. Reducimos el padding del contenedor del carrusel para dar más espacio a las 2 columnas
   .carousel-inner {
-    // Reducimos drásticamente el padding lateral en móvil para aprovechar el espacio
-    padding: 1rem 2.5rem !important; 
-    min-height: auto; // Dejar que la altura sea automática en móvil
+    padding: 1rem 1.5rem !important; // Reducido de 2.5rem o 5rem
+    min-height: auto;
   }
 
-  // Flechas más pequeñas y menos intrusivas
+  // 2. Ajustamos las tarjetas para que quepan mejor
+  .book-card {
+    .card-body {
+      padding: 0.75rem !important; // Menos relleno interno
+    }
+    .card-title {
+      font-size: 0.9rem !important; // Título más pequeño
+      margin-bottom: 0.25rem !important;
+    }
+    .card-subtitle {
+      font-size: 0.75rem !important; // Autor más pequeño
+    }
+  }
+
+  // 3. Reducimos la altura de la imagen en móvil
+  .book-image {
+    height: 140px; // En desktop es 200px
+    padding: 0.5rem;
+  }
+
+  // 4. Botones más compactos
+  .btn-sm {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  // (Mantenemos los ajustes de flechas que hicimos antes si te gustaron)
   .carousel-control-prev,
   .carousel-control-next {
-    width: 3rem; // Zona de clic más estrecha
+    width: 2.5rem; 
   }
-
   .carousel-control-prev-icon,
   .carousel-control-next-icon {
-    width: 2rem;   // Icono más pequeño
-    height: 2rem;
+    width: 1.5rem; height: 1.5rem;
   }
 }
