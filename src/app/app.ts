@@ -20,8 +20,6 @@ import { CommonModule } from '@angular/common';
     <app-footer></app-footer>
   `,
   styles: [`
-    /* 🔴 ELIMINAMOS TODOS LOS ESTILOS DE SIDEBAR Y RESPONSIVIDAD AQUÍ 🔴 */
-    /* Dejamos solo los estilos base de main si aplican */
     main {
       height: 100%; 
       background-color: rgba(248, 249, 250, 0.8); /* Un fondo suave para el contenido */

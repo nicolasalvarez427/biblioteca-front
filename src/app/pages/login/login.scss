@@ -10,17 +10,18 @@
 }
 
 .card {
-  width: 100%;
-  max-width: 420px; // Un poco más ancho para que respire mejor
+  width: 100%; // Ocupa todo el ancho disponible...
+  max-width: 420px; // ...hasta un máximo de 420px
   border: 1px solid rgba(255, 255, 255, 0.3); // Borde sutil semitransparente
-  border-radius: 1rem;
-
-  // Efecto "Glassmorphism"
+  border-radius: 1rem;  // Efecto "Glassmorphism"
   background-color: rgba(255, 255, 255, 0.85); // Blanco al 85% de opacidad
   backdrop-filter: blur(12px); // Desenfoca el fondo detrás de la tarjeta
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15); // Sombra suave pero profunda
-
   animation: slideUpFade 0.5s ease-out; // Animación de entrada
+
+  @media (max-width: 576px) {
+     margin: 0 1rem; // Un pequeño margen lateral para que no pegue a los bordes de la pantalla
+  }
 }
 
 .card-title {

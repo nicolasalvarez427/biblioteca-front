@@ -87,3 +87,19 @@ main > * {
   right: 0;
   background-image: linear-gradient(to left, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%);
 }
+body, main {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Ajustar paddings globales en móvil */
+@media (max-width: 768px) {
+  main {
+    padding: 1rem 0.5rem !important; // Menos padding vertical y horizontal
+  }
+  
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}

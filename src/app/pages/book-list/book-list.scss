@@ -111,3 +111,22 @@
 .carousel-indicators button:hover {
   opacity: 1;
 }
+@media (max-width: 768px) {
+  .carousel-inner {
+    // Reducimos drásticamente el padding lateral en móvil para aprovechar el espacio
+    padding: 1rem 2.5rem !important; 
+    min-height: auto; // Dejar que la altura sea automática en móvil
+  }
+
+  // Flechas más pequeñas y menos intrusivas
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 3rem; // Zona de clic más estrecha
+  }
+
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    width: 2rem;   // Icono más pequeño
+    height: 2rem;
+  }
+}

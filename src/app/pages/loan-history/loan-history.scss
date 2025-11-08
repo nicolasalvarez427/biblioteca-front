@@ -7,3 +7,25 @@
   width: 100%;
   padding: 2rem 0;
 }
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1rem !important; // Menos padding en el contenedor
+  }
+
+  .table {
+    font-size: 0.85rem; // Texto más pequeño en tablas
+    
+    th, td {
+      padding: 0.5rem !important; // Celdas más compactas
+    }
+  }
+
+  // Ocultar columnas menos urgentes en móvil si es necesario
+  // .d-none-mobile { display: none; } 
+
+  // Hacer que los botones de acción sean más compactos
+  .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+}
